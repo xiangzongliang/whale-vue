@@ -1,0 +1,36 @@
+{
+  "name": "whale-vue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --config config/config.dev.js",
+    "build": "webpack --config config/config.dev.js --mode=production",
+    "server": "webpack --config config/config.dev.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiangzongliang/whale-vue.git"
+  },
+  "author": "xiangzongliang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xiangzongliang/whale-vue/issues"
+  },
+  "homepage": "https://github.com/xiangzongliang/whale-vue#readme",
+  "devDependencies": {
+    "html-webpack-plugin": "^3.2.0",
+    "vue-template-compiler": "^2.5.21",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "dependencies": {
+    "@babel/core": "^7.2.2",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.4",
+    "vue": "^2.5.21",
+    "vue-loader": "^15.4.2"
+  }
+}
