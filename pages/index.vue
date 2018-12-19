@@ -1,11 +1,14 @@
 <template>
-  <div class="example">{{ title }}</div>
+  <div class="example">{{ title }}
+      <p>dsadsad</p>
+  </div>
 </template>
 <script>
 export default {
     data(){
         return{
-            title:'这是自定义的内容'
+            title:'hcuisdkahuicdh',
+            name:1213
         }
     }
 }
