@@ -7,7 +7,7 @@
 export default {
     data(){
         return{
-            title:'hcuisdkahuicdh',
+            title:'hurieshviuhsiu',
             name:1213
         }
     }

@@ -18,6 +18,7 @@ module.exports = {
     resolve:{
         modules: [path.resolve(__dirname,'../node_modules')],  //指明包模块的加载路径，避免层层查找的消耗
         alias: {
+            '@':path.resolve(__dirname, '../'),
             'vue':path.resolve(__dirname,'../node_modules/vue/dist/vue.min.js'), //直接手动引入，就不会加载package中的main对应的文件，并减少递归操作
         },
         extensions:['.js','.vue','.json'],
@@ -28,6 +29,7 @@ module.exports = {
         namedModules: true
     },
     module:{
+        noParse:/^(vue|vue-router|vuex|vuex-router-sync)$/, //忽略大型的 library 可以提高构建性能
         rules: [{
             test: /\.vue$/,
             exclude: /node_modules/,
@@ -47,6 +49,9 @@ module.exports = {
             include: path.resolve(__dirname,'../')
         }]
     },
+    resolveLoader:{
+        //module:['node_modules']
+    },
     externals:{
         // vue: "Vue",
     },
@@ -64,7 +69,12 @@ module.exports = {
             template: './template/index.html'
         }),
         new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
+        new webpack.HotModuleReplacementPlugin({
+            options:{},
+            multiStep:undefined,
+            fullBuildTimeout:200,
+            requestTimeout:10000
+        }),
         new BundleAnalyzerPlugin({
             defaultSizes:'gzip',
             logLevel:'warn'
