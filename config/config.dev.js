@@ -6,7 +6,7 @@ const HappyPack = require('happypack');
 const path = require('path');
 
 module.exports = {
-    //mode:'production', //production  development
+    mode:'development', //production  development
     entry: {
         index:'./pages/index.js',
         about:'./pages/about.js'
