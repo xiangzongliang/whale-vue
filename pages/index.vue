@@ -42,4 +42,10 @@ export default {
     }
 }
 </script>
+<style scoped>
+.example{
+    background: #ff8800
+}
+</style>
+
 
