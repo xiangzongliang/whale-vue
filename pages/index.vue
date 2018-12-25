@@ -1,11 +1,14 @@
 <template>
   <div class="example">{{ title }}
-      <img src="https://www.xiangzongliang.com/_nuxt/img/logoIco.35b4973.png"/>
       <input v-model="inputVal"/>
+      <!-- <img src="../assets/big_icon.png" alt=""> -->
       <span @click="postMsg">发送信息</span>
   </div>
 </template>
 <script>
+import nonetWork from "../pages/about.vue";
+require('./main')
+
 export default {
     data(){
         return{
@@ -17,6 +20,7 @@ export default {
     },
     mounted(){
         if ('serviceWorker' in navigator) {
+            console.log('')
       // 有原生支持时，在页面加载后开启新的 Service Worker 线程，从而优化首屏加载速度
         window.addEventListener('load', function() {
         // register 方法里第一个参数为 Service Worker 要加载的文件；第二个参数 scope 可选，用来指定 Service Worker 控制的内容的子目录

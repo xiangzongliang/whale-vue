@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --config config/config.dev.js --mode=development",
-    "prd": "webpack-dev-server --config config/config.befor.js",
-    "build": "webpack --config config/config.dev.js --mode=production",
+    "dev": "VUE_ENV=dev webpack-dev-server --config config/config.dev.js",
+    "prd": "VUE_ENV=prd webpack-dev-server --config config/config.befor.js",
+    "build": "VUE_ENV=build webpack --config config/config.dev.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

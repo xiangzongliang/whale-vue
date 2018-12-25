@@ -7,17 +7,15 @@ const HappyPack = require('happypack');
 const path = require('path');
 // const pages = require('./pages');
 
-
-
-
 module.exports = {
-    mode:'development', //production  development
+    mode: process.env.VUE_ENV == 'dev' ? 'development' : 'production', //production  development
+    target: 'node',// 'web', // <=== 默认是 'web'，可省略
     entry: {
         index:'./pages/index.js',
         about:'./pages/about.js',
     },
     output: {
-        filename: '[name].js',
+        filename: './js/[name].js',
         path: path.resolve(__dirname, '../build')
     },
     resolve:{
@@ -31,6 +29,11 @@ module.exports = {
             // 返回true或false 
             //return /jquery|chartjs/.test(content); 
         //}
+    },
+    performance:{ //性能
+        hints:'warning', //false | warning | error 当找到提示时，告诉 webpack 抛出一个错误或警告。默认 warning
+        //maxEntrypointSize:250000,
+        //maxAssetSize:250000
     },
     optimization: { //优化
         minimize: true,  //告诉webpack使用UglifyjsWebpackPlugin最小化捆绑包。
@@ -47,7 +50,7 @@ module.exports = {
         }
     },
     module:{
-        noParse:/^(vue|vue-router|vuex|vuex-router-sync)$/, //忽略大型的 library 可以提高构建性能
+        noParse:/^(vue|vue-router|vuex|vuex-router-sync|lodash)$/, //忽略大型的 library 可以提高构建性能
         rules: [{
             test: /\.vue$/,
             exclude: /node_modules/,
@@ -80,37 +83,31 @@ module.exports = {
             })
         }]
     },
-    resolveLoader:{
-        //module:['node_modules']
-    },
+    // resolveLoader:{
+    //     module:['node_modules']
+    // },
     externals:{
         // vue: "Vue",
     },
     plugins:[
         new VueLoaderPlugin(),
-        // new webpack.DllPlugin({
-        //     context: __dirname,
-        //     name: "[name]_[hash]",
-        //     path: path.join(__dirname, "manifest.json"),
-        // }),
         new HappyPack({
             id: 'babel',
             //cache: false,
             threads:8, //开几个线程去处理 
-            // 2、babel-loader支持缓存转换出的结果，通过cacheDirectory选项开启
-            loaders: [ 'babel-loader?cacheDirectory' ],
+            loaders: [ 'babel-loader?cacheDirectory' ],// 2、babel-loader支持缓存转换出的结果，通过cacheDirectory选项开启
         }),
   
         // 抽取出代码模块的映射关系
-        // new webpack.optimize.CommonsChunkPlugin(),
         new HtmlWebpackPlugin({
             title:'this index',
             chunks:['index','runtime~index','commons'],
             filename:'index.html',
-            template: './template/index.html'
+            template: './template/index.html',
+            hash:true,  //开启 hash 则会在文件后面增加 hash 
         }),
         new HtmlWebpackPlugin({
-            title:'this index',
+            title:'this about',
             chunks:['about','runtime~about','commons'],
             filename:'about.html',
             template: './template/index.html'
@@ -123,10 +120,16 @@ module.exports = {
         new webpack.NamedModulesPlugin(),  //显示被热更新的模块名称
         new webpack.HotModuleReplacementPlugin({
             options:{},
-            multiStep:undefined,
-            fullBuildTimeout:200,
+            multiStep:true, //设置为 true 时，插件会分成两步构建文件。首先编译热加载 chunks，之后再编译剩余的通常的资源。
+            fullBuildTimeout:200,   //当 multiStep 启用时，表示两步构建之间的延时。
             requestTimeout:10000
         }),
+        // new webpack.optimize.AggressiveSplittingPlugin({
+        //     minSize: 30720, // 字节，分割点。默认：30720
+        //     maxSize: 51200, // 字节，每个文件最大字节。默认：51200
+        //     chunkOverhead: 0, // 默认：0
+        //     entryChunkMultiplicator: 1, // 默认：1
+        // })
 
         
         // new webpack.DllReferencePlugin({
@@ -155,5 +158,9 @@ module.exports = {
             poll: 1000,// 默认每秒询问1000次
         },
         contentBase:path.join(__dirname,'../public'),     //静态资源目录
+        //统计信息
+        stats:{
+            
+        }
     }
 };
