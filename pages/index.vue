@@ -1,18 +1,19 @@
 <template>
   <div class="example">{{ title }}
       <input v-model="inputVal"/>
-      <!-- <img src="../assets/big_icon.png" alt=""> -->
+      ddsd
+      <img src="@/assets/big_icon.png" alt="">
       <span @click="postMsg">发送信息</span>
   </div>
 </template>
 <script>
-import nonetWork from "../pages/about.vue";
-require('./main')
+// import nonetWork from "../pages/about.vue";
+
 
 export default {
     data(){
         return{
-            title:'hurieshviuhsiu',
+            title:'dsadad',
             name:1213,
             inputVal:'',
 
