@@ -2,6 +2,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); //通过 npm 安装
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin'); //抽离CSS
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+//const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');      //分离出webpack编译运行时的代码，也就是我们先前称为manifest的代码块
+const StatsPlugin = require('stats-webpack-plugin');    //生成 analyse 分析文件
 const webpack = require('webpack'); //访问内置的插件
 const HappyPack = require('happypack');
 const path = require('path');
@@ -39,12 +41,26 @@ module.exports = {
         minimize: true,  //告诉webpack使用UglifyjsWebpackPlugin最小化捆绑包。
         runtimeChunk:true,
         namedModules: true,
+        noEmitOnErrors: true,       //在 webpack 编译代码出现错误时并不会退出 webpack 
+        runtimeChunk:{  // 仅包含运行时的每个入口点添加一个额外的块  也就是 manifest 文件块
+            name: entrypoint => {
+                return `whale_${entrypoint.name}`
+            }
+        }, 
         splitChunks: {
             cacheGroups: { //缓存组 ,可以替换默认的配置
-                commons: {
-                    name: "commons",
-                    chunks: "initial",
-                    minChunks: 2
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/, //匹配过滤  合并了node_modoles的js
+                    name: 'vendors',        //拆分块的名称
+                    minSize: 1024*10,   //要生成的块的最小大小。
+                    minChunks: 1,       //分割前必须共享模块的最小块数。
+                    chunks: 'initial',
+                    priority: 1 // 该配置项是设置处理的优先级，数值越大越优先处理
+                },
+                commons:{
+                    minChunks: 2,
+                    priority: -1,
+                    reuseExistingChunk: true
                 }
             }
         }
@@ -120,18 +136,20 @@ module.exports = {
         // 抽取出代码模块的映射关系
         new HtmlWebpackPlugin({
             title:'this index',
-            chunks:['index','runtime~index','commons'],
+            chunks:['index','commons','whale_index','vendors'],
             filename:'index.html',
             template: './template/index.html',
             //hash:true,  //开启 hash 则会在文件后面增加 hash 
         }),
         new HtmlWebpackPlugin({
             title:'this about',
-            chunks:['about','runtime~about','commons'],
+            chunks:['about','commons','whale_about','vendors'],
             filename:'about.html',
             template: './template/index.html'
         }),
 
+        //new InlineManifestWebpackPlugin(['whale_index','whale_about']),     //将 manifest 代码块直接插入到html中,也就是 runtime ~ xxx.js 来减少一次请求
+ 
 
         //抽离CSS
         new ExtractTextPlugin({filename: 'css/[name].css', allChunks: true}),
@@ -143,10 +161,16 @@ module.exports = {
             fullBuildTimeout:200,   //当 multiStep 启用时，表示两步构建之间的延时。
             requestTimeout:10000
         }),
-        new BundleAnalyzerPlugin({
-            defaultSizes:'gzip',
-            logLevel:'warn'
-        })
+
+        //生成 https://webpack.github.io/analyse/ 分析文件
+        new StatsPlugin('../analyse.json', {
+            chunkModules: true,
+            exclude: [/node_modules[\\\/]vue/]
+        }),
+        // new BundleAnalyzerPlugin({
+        //     defaultSizes:'gzip',
+        //     logLevel:'warn'
+        // })
     ],
     devServer:{
         host:'localhost',
@@ -190,5 +214,5 @@ module.exports = {
         after:(app)=>{
 
         },
-    }
+    },
 };
