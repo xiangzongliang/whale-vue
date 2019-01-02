@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //通过 npm 安装
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin'); //抽离CSS
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");    //提取公共样式
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 //const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');      //分离出webpack编译运行时的代码，也就是我们先前称为manifest的代码块
 const StatsPlugin = require('stats-webpack-plugin');    //生成 analyse 分析文件
@@ -94,14 +95,25 @@ module.exports = {
             exclude: /node_modules/,
             include: path.resolve(__dirname,'../'),
         },{
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract({
-                use: [
-                    {
-                        loader: 'css-loader'
+            test: /\.(css|less)$/,
+            use: [
+                MiniCssExtractPlugin.loader,
+                {
+                    loader: 'css-loader',
+                    options: {
+                        url: false
                     }
-                ]
-            })
+                }
+            ],
+            // use: [
+            //     MiniCssExtractPlugin.loader
+            //     ,{
+            //         loader: ExtractTextPlugin.extract({
+            //             use: ['css-loader','less-loader']
+            //         })
+            //     }
+                
+            // ],
         },{
             test: /\.(png|jpg|jpeg|gif|)$/,
             use: [
@@ -152,7 +164,15 @@ module.exports = {
  
 
         //抽离CSS
-        new ExtractTextPlugin({filename: 'css/[name].css', allChunks: true}),
+        // new ExtractTextPlugin({filename: 'css/[name].css', allChunks: true}),
+
+        //提取公共样式
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: "[name].css",
+            chunkFilename: "[id].css"
+        }),
 
         new webpack.NamedModulesPlugin(),  //显示被热更新的模块名称
         new webpack.HotModuleReplacementPlugin({
