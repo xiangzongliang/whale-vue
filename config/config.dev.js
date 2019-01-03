@@ -94,7 +94,7 @@ module.exports = {
                     loaders: {
                         js: 'happypack/loader?id=babel',
                         css:{
-                            use: [MiniCssExtractPlugin.loader,'css-loader','postcss-loader'],
+                            use: [ MiniCssExtractPlugin.loader,'css-loader','postcss-loader' ],
                             fallback: 'vue-style-loader'
                         }
                     },
@@ -102,38 +102,15 @@ module.exports = {
             }]
         },{
             test: /\.js$/,
-            use: [{
-                    loader: 'cache-loader',
-                },'happypack/loader?id=babel'
-            ],
+            use: [ {loader: 'cache-loader'},'happypack/loader?id=babel' ],
             exclude: /node_modules/,
             include: path.resolve(__dirname,'../'),
         },{
             test: /\.(sa|sc|c)ss$/,
-            use: [{
-                    loader: MiniCssExtractPlugin.loader,
-                    options: {
-                        publicPath: '../',
-                        outputPath:'./css'
-                    }
-                },
-                'css-loader',
-                'postcss-loader',
-                'sass-loader',
-              ],
+            use: [ MiniCssExtractPlugin.loader,'css-loader','postcss-loader', 'sass-loader' ],
         },{
             test: /\.less$/,
-            use: [ {
-                    loader: MiniCssExtractPlugin.loader,
-                    options: {
-                        publicPath: '../',
-                        outputPath:'./css'
-                    }
-                },
-                'css-loader',
-                'postcss-loader',
-                'less-loader',
-            ],
+            use: [ MiniCssExtractPlugin.loader,'css-loader', 'postcss-loader', 'less-loader' ],
         },{
             test: /\.(png|jpg|jpeg|gif|)$/,
             use: [
@@ -164,6 +141,7 @@ module.exports = {
             threads:OPEN_THREAD, //开几个线程去处理 
             loaders: [ 'cache-loader','babel-loader?cacheDirectory' ],// 2、babel-loader支持缓存转换出的结果，通过cacheDirectory选项开启
         }),
+
   
         // 抽取出代码模块的映射关系
         new HtmlWebpackPlugin({
