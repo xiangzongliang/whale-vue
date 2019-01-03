@@ -2,7 +2,7 @@
   <div class="example">{{ title }}
       <input v-model="inputVal"/>
       ddsd
-      <img src="@/assets/big_icon.png" alt="">
+      <img src="@/assets/images/big_icon.png" alt="">
       <span @click="postMsg">发送信息</span>
   </div>
 </template>
@@ -49,7 +49,7 @@ export default {
 </script>
 <style scoped>
 .example{
-    background: #ff8800
+    background: #fff
 }
 </style>
 

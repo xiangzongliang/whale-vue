@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import index from './index.vue'
+import abcommon from '@/assets/js/abcommon';
 
 import '@/assets/less/index.less';
 

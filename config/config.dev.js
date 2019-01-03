@@ -1,7 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //通过 npm 安装
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin'); //抽离CSS
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");    //提取公共样式
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");    //抽离并提取公共样式
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 //const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');      //分离出webpack编译运行时的代码，也就是我们先前称为manifest的代码块
 const StatsPlugin = require('stats-webpack-plugin');    //生成 analyse 分析文件
@@ -12,6 +11,8 @@ const os = require('os');
 
 const OPEN_THREAD = os.cpus().length * 2;  //计划开启几个线程处理
 console.log(`开启了${OPEN_THREAD}个线程处理项目`);
+
+let isProd = process.env.APP_ENV === 'dev'
 
 
 
@@ -50,18 +51,31 @@ module.exports = {
         }, 
         splitChunks: {
             cacheGroups: { //缓存组 ,可以替换默认的配置
+                //default:false, //将最少重复引用两次的模块放入default中
                 vendors: {
                     test: /[\\/]node_modules[\\/]/, //匹配过滤  合并了node_modoles的js
+                    chunks: 'initial',      //initial(初始块)、async(按需加载块)、all(全部块)，默认为all;
                     name: 'vendors',        //拆分块的名称
-                    minSize: 1024*10,   //要生成的块的最小大小。
-                    minChunks: 1,       //分割前必须共享模块的最小块数。
-                    chunks: 'initial',
-                    priority: 1 // 该配置项是设置处理的优先级，数值越大越优先处理
+                    //minSize: 1024*10,     //表示在压缩前的最小模块大小，默认为0；
+                    //minChunks: 1,         //表示被引用次数，默认为1；
+                    //maxAsyncRequests:     //最大的按需(异步)加载次数，默认为1；
+                    //maxInitialRequests:   //最大的初始化加载次数，默认为1；
+                    priority: 10             // 该配置项是设置处理的优先级，数值越大越优先处理
                 },
-                commons:{
-                    minChunks: 2,
-                    priority: -1,
-                    reuseExistingChunk: true
+                common:{
+                    test: /[\\/]assets\/js[\\/]/,
+                    name: 'common',
+                    chunks: 'initial',
+                    //minChunks: 2,
+                    priority: 1,
+                    enforce: true,
+                    //reuseExistingChunk: true //表示可以使用已经存在的块，即如果满足条件的块已经存在就使用已有的，不再创建一个新的块。
+                },
+                styles: {
+                    name: 'vendors_css',
+                    test: /\.(sc|c|sa|le)ss$/,
+                    chunks: 'all',
+                    enforce: true,          // 如果cacheGroup中没有设置minSize，则据此判断是否使用上层的minSize，true：则使用0，false：使用上层minSize
                 }
             }
         }
@@ -79,10 +93,10 @@ module.exports = {
                 options: {
                     loaders: {
                         js: 'happypack/loader?id=babel',
-                        css:ExtractTextPlugin.extract({
-                            use: 'css-loader',
+                        css:{
+                            use: [MiniCssExtractPlugin.loader,'css-loader','postcss-loader'],
                             fallback: 'vue-style-loader'
-                        })
+                        }
                     },
                 }
             }]
@@ -95,25 +109,31 @@ module.exports = {
             exclude: /node_modules/,
             include: path.resolve(__dirname,'../'),
         },{
-            test: /\.(css|less)$/,
-            use: [
-                MiniCssExtractPlugin.loader,
-                {
-                    loader: 'css-loader',
+            test: /\.(sa|sc|c)ss$/,
+            use: [{
+                    loader: MiniCssExtractPlugin.loader,
                     options: {
-                        url: false
+                        publicPath: '../',
+                        outputPath:'./css'
                     }
-                }
+                },
+                'css-loader',
+                'postcss-loader',
+                'sass-loader',
+              ],
+        },{
+            test: /\.less$/,
+            use: [ {
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                        publicPath: '../',
+                        outputPath:'./css'
+                    }
+                },
+                'css-loader',
+                'postcss-loader',
+                'less-loader',
             ],
-            // use: [
-            //     MiniCssExtractPlugin.loader
-            //     ,{
-            //         loader: ExtractTextPlugin.extract({
-            //             use: ['css-loader','less-loader']
-            //         })
-            //     }
-                
-            // ],
         },{
             test: /\.(png|jpg|jpeg|gif|)$/,
             use: [
@@ -125,8 +145,8 @@ module.exports = {
                             loader: "file-loader",
                             options: {
                                 name:'[name].[ext]',
-                                publicPath:'assets/images',
-                                outputPath:'assets/images'
+                                publicPath:'./img',
+                                outputPath:'./img'
                             }
                         },
                         
@@ -148,14 +168,23 @@ module.exports = {
         // 抽取出代码模块的映射关系
         new HtmlWebpackPlugin({
             title:'this index',
-            chunks:['index','commons','whale_index','vendors'],
+            chunks:['index','common','vendors','whale_index','vendors_css'],
             filename:'index.html',
+            minify:true,    //对html进行压缩,默认false
+            hash:true,      //默认false
             template: './template/index.html',
+            chunksSortMode:"dependency"
+            /**
+             * 'dependency' 按照不同文件的依赖关系来排序。
+             * 'auto' 默认值，插件的内置的排序方式，具体顺序我也不太清楚...
+             * 'none' 无序？ 不太清楚...
+             * 'function' 提供一个函数！！复杂...
+             */
             //hash:true,  //开启 hash 则会在文件后面增加 hash 
         }),
         new HtmlWebpackPlugin({
             title:'this about',
-            chunks:['about','commons','whale_about','vendors'],
+            chunks:['about','common','vendors','whale_about','vendors_css'],
             filename:'about.html',
             template: './template/index.html'
         }),
@@ -163,15 +192,11 @@ module.exports = {
         //new InlineManifestWebpackPlugin(['whale_index','whale_about']),     //将 manifest 代码块直接插入到html中,也就是 runtime ~ xxx.js 来减少一次请求
  
 
-        //抽离CSS
-        // new ExtractTextPlugin({filename: 'css/[name].css', allChunks: true}),
 
         //提取公共样式
         new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: "[name].css",
-            chunkFilename: "[id].css"
+            filename: isProd ? '[name].css' : '[name].css',
+            chunkFilename: isProd ? '[name].css' : '[name].css',
         }),
 
         new webpack.NamedModulesPlugin(),  //显示被热更新的模块名称

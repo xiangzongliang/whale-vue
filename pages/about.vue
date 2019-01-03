@@ -5,7 +5,7 @@
 </template>
 <style scoped>
 .text{
-    color: #33b5e5;
+    color: #fff;
 }
 </style>
 
