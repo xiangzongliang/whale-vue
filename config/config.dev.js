@@ -107,12 +107,12 @@ module.exports = {
             include: path.resolve(__dirname,'../'),
         },{
             test: /\.(sa|sc|c)ss$/,
-            use: [ MiniCssExtractPlugin.loader,'css-loader','postcss-loader', 'sass-loader' ],
+            use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'css-loader','postcss-loader', 'sass-loader' ],
         },{
             test: /\.less$/,
-            use: [ MiniCssExtractPlugin.loader,'css-loader', 'postcss-loader', 'less-loader' ],
+            use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader ,'css-loader', 'postcss-loader', 'less-loader' ],
         },{
-            test: /\.(png|jpg|jpeg|gif|)$/,
+            test: /\.(png|jpg|jpeg|gif)$/,
             use: [
                 {
                     loader: 'url-loader',  //对于一些较小的文件采用base64编码
@@ -167,8 +167,6 @@ module.exports = {
             template: './template/index.html'
         }),
 
-        //new InlineManifestWebpackPlugin(['whale_index','whale_about']),     //将 manifest 代码块直接插入到html中,也就是 runtime ~ xxx.js 来减少一次请求
- 
 
 
         //提取公共样式

@@ -8,7 +8,7 @@ const presets = [
                 safari: "11.1",
                 opera:'10',
                 ie:"10",
-                ios:"8.0",
+                ios:"7.0",
                 android:"4.0",
                 node:"8.11.1"
             },
