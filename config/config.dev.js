@@ -8,12 +8,12 @@ const webpack = require('webpack'); //访问内置的插件
 const HappyPack = require('happypack');
 const path = require('path');
 const os = require('os');
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
-const OPEN_THREAD = os.cpus().length * 2;  //计划开启几个线程处理
+const OPEN_THREAD = 2 || os.cpus().length;  //计划开启几个线程处理
 console.log(`开启了${OPEN_THREAD}个线程处理项目`);
 
 let isProd = process.env.APP_ENV === 'dev'
-
 
 
 module.exports = {
@@ -24,21 +24,25 @@ module.exports = {
         about:'./pages/about.js',
     },
     output: {
-        filename: './js/[name].js',
+        filename: './js/[name].bundle.js',
+        chunkFilename: './js/[name].chunk.js',
         path: path.resolve(__dirname, '../build')
     },
     resolve:{
-        modules: [path.resolve(__dirname,'../node_modules')],  //指明包模块的加载路径，避免层层查找的消耗
+        modules: [path.resolve(__dirname,'../node_modules')],  //指明包模块的加载路径，避免层层查找的消耗（也就是说webpack去那个目录下面查找三方的包模块）
         alias: {
             '@':path.resolve(__dirname, '../'),
             //'vue':path.resolve(__dirname,'../node_modules/vue/dist/vue.min.js'), //直接手动引入，就不会加载package中的main对应的文件，并减少递归操作
         },
         extensions:['.js','.vue','.json'],
-        //noParse:(content)=> { 
-            // 返回true或false 
-            //return /jquery|chartjs/.test(content); 
-        //}
+        //aliasFields:[ 'jsnext:main' , 'browser' ,'main'],//当模块包有多个版本时，在package.json文件中优先选用的模块
     },
+    resolveLoader:{ //webpack 如何去寻找 loader
+        modules: [ path.resolve(__dirname,'../node_modules') ],
+        extensions: [ '.js', '.json' ],     //默认
+        mainFields: [ 'loader', 'main' ]    //默认
+    },
+    //externals:{}, //排除外部的模块，避免打包多次
     optimization: { //优化
         minimize: true,  //告诉webpack使用UglifyjsWebpackPlugin最小化捆绑包。
         runtimeChunk:true,
@@ -52,10 +56,10 @@ module.exports = {
         splitChunks: {
             cacheGroups: { //缓存组 ,可以替换默认的配置
                 //default:false, //将最少重复引用两次的模块放入default中
-                vendors: {
+                vendor: {
                     test: /[\\/]node_modules[\\/]/, //匹配过滤  合并了node_modoles的js
                     chunks: 'initial',      //initial(初始块)、async(按需加载块)、all(全部块)，默认为all;
-                    name: 'vendors',        //拆分块的名称
+                    name: 'vendor',        //拆分块的名称
                     //minSize: 1024*10,     //表示在压缩前的最小模块大小，默认为0；
                     //minChunks: 1,         //表示被引用次数，默认为1；
                     //maxAsyncRequests:     //最大的按需(异步)加载次数，默认为1；
@@ -94,7 +98,7 @@ module.exports = {
                     loaders: {
                         js: 'happypack/loader?id=babel',
                         css:{
-                            use: [ MiniCssExtractPlugin.loader,'css-loader','postcss-loader' ],
+                            use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'css-loader','postcss-loader' ],
                             fallback: 'vue-style-loader'
                         }
                     },
@@ -107,12 +111,18 @@ module.exports = {
             include: path.resolve(__dirname,'../'),
         },{
             test: /\.(sa|sc|c)ss$/,
+            exclude: /node_modules/,
+            include: path.resolve(__dirname,'../'),
             use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'css-loader','postcss-loader', 'sass-loader' ],
         },{
             test: /\.less$/,
+            exclude: /node_modules/,
+            include: path.resolve(__dirname,'../'),
             use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader ,'css-loader', 'postcss-loader', 'less-loader' ],
         },{
             test: /\.(png|jpg|jpeg|gif)$/,
+            exclude: /node_modules/,
+            include: path.resolve(__dirname,'../assets/'),
             use: [
                 {
                     loader: 'url-loader',  //对于一些较小的文件采用base64编码
@@ -140,13 +150,16 @@ module.exports = {
             //cache: false,
             threads:OPEN_THREAD, //开几个线程去处理 
             loaders: [ 'cache-loader','babel-loader?cacheDirectory' ],// 2、babel-loader支持缓存转换出的结果，通过cacheDirectory选项开启
+            //允许 HappyPack 输出日志 ,默认true
+            //verbose: true,
+            threadPool: happyThreadPool,
         }),
 
   
         // 抽取出代码模块的映射关系
         new HtmlWebpackPlugin({
             title:'this index',
-            chunks:['index','common','vendors','whale_index','vendors_css'],
+            chunks:['index','common','vendor','whale_index','vendors_css'],
             filename:'index.html',
             minify:true,    //对html进行压缩,默认false
             hash:true,      //默认false
@@ -162,7 +175,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             title:'this about',
-            chunks:['about','common','vendors','whale_about','vendors_css'],
+            chunks:['about','common','vendor','whale_about','vendors_css'],
             filename:'about.html',
             template: './template/index.html'
         }),
@@ -171,8 +184,8 @@ module.exports = {
 
         //提取公共样式
         new MiniCssExtractPlugin({
-            filename: isProd ? '[name].css' : '[name].css',
-            chunkFilename: isProd ? '[name].css' : '[name].css',
+            filename: isProd ? '[name].css' : '[name].min.css',
+            chunkFilename: isProd ? '[name].css' : '[name].min.css',
         }),
 
         new webpack.NamedModulesPlugin(),  //显示被热更新的模块名称
@@ -193,6 +206,7 @@ module.exports = {
         //     logLevel:'warn'
         // })
     ],
+    //devtool:false,
     devServer:{
         host:'localhost',
         port:8088,

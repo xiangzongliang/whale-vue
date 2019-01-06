@@ -10,15 +10,15 @@ const presets = [
                 ie:"10",
                 ios:"7.0",
                 android:"4.0",
-                node:"8.11.1"
+                node:"8.0.0"
             },
             useBuiltIns: "usage",
         },
-    ],
+    ]
 ];
 
 
-const plugins = []
+const plugins = [] //"transform-runtime"
   
 module.exports = { 
     presets,
