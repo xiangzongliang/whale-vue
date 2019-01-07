@@ -8,12 +8,43 @@ const webpack = require('webpack'); //访问内置的插件
 const HappyPack = require('happypack');
 const path = require('path');
 const os = require('os');
-const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+const Jarvis = require("webpack-jarvis"); //图形化log
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length }); //happypack多个实例的时候，共享线程池，以达到资源的最小消耗
 
-const OPEN_THREAD = 2 || os.cpus().length;  //计划开启几个线程处理
+
+
+/**
+ * thread-loader 可以将非常消耗资源的 loaders 转存到 worker pool 中。
+ */
+const threadLoader = require('thread-loader');
+threadLoader.warmup({
+        workers:4
+    },[
+        'babel-loader',
+        'style-loader',
+        'vue-loader',
+        'css-loader',
+        'url-loader',
+        'less-loader',
+]);
+
+
+
+
+
+
+const OPEN_THREAD = os.cpus().length;  //计划开启几个线程处理
 console.log(`开启了${OPEN_THREAD}个线程处理项目`);
 
+
+
+
+
 let isProd = process.env.APP_ENV === 'dev'
+
+
+
+
 
 
 module.exports = {
@@ -35,6 +66,7 @@ module.exports = {
             //'vue':path.resolve(__dirname,'../node_modules/vue/dist/vue.min.js'), //直接手动引入，就不会加载package中的main对应的文件，并减少递归操作
         },
         extensions:['.js','.vue','.json'],
+        symlinks: false,
         //aliasFields:[ 'jsnext:main' , 'browser' ,'main'],//当模块包有多个版本时，在package.json文件中优先选用的模块
     },
     resolveLoader:{ //webpack 如何去寻找 loader
@@ -45,9 +77,9 @@ module.exports = {
     //externals:{}, //排除外部的模块，避免打包多次
     optimization: { //优化
         minimize: true,  //告诉webpack使用UglifyjsWebpackPlugin最小化捆绑包。
-        runtimeChunk:true,
         namedModules: true,
         noEmitOnErrors: true,       //在 webpack 编译代码出现错误时并不会退出 webpack 
+
         runtimeChunk:{  // 仅包含运行时的每个入口点添加一个额外的块  也就是 manifest 文件块
             name: entrypoint => {
                 return `whale_${entrypoint.name}`
@@ -75,6 +107,11 @@ module.exports = {
                     enforce: true,
                     //reuseExistingChunk: true //表示可以使用已经存在的块，即如果满足条件的块已经存在就使用已有的，不再创建一个新的块。
                 },
+                // elementUI: {
+                //     name: "chunk-elementUI",
+                //     priority: 20,
+                //     test: /[\\/]node_modules[\\/]element-ui[\\/]/
+                // },
                 styles: {
                     name: 'vendors_css',
                     test: /\.(sc|c|sa|le)ss$/,
@@ -90,9 +127,8 @@ module.exports = {
             test: /\.vue$/,
             exclude: /node_modules/,
             include: path.resolve(__dirname,'../'),
-            use: [{
-                    loader: 'cache-loader',
-                },{
+            use: ['cache-loader',"thread-loader",
+            {
                 loader: 'vue-loader',
                 options: {
                     loaders: {
@@ -120,7 +156,7 @@ module.exports = {
             include: path.resolve(__dirname,'../'),
             use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader ,'css-loader', 'postcss-loader', 'less-loader' ],
         },{
-            test: /\.(png|jpg|jpeg|gif)$/,
+            test: /\.(png|svg|jpg|jpeg|gif)$/,
             exclude: /node_modules/,
             include: path.resolve(__dirname,'../assets/'),
             use: [
@@ -140,8 +176,17 @@ module.exports = {
                     }
                 }
             ]
-        }
-        ]
+        },{
+            test: /\.(woff|woff2|eot|ttf|otf)$/,
+            use: [{
+                loader: 'file-loader',
+                options: {
+                    name:'[name].[ext]',
+                    publicPath:'./fonts',
+                    outputPath:'./fonts'
+                }
+            }]
+        }]
     },
     plugins:[
         new VueLoaderPlugin(),
@@ -154,8 +199,8 @@ module.exports = {
             //verbose: true,
             threadPool: happyThreadPool,
         }),
-
-  
+    
+    
         // 抽取出代码模块的映射关系
         new HtmlWebpackPlugin({
             title:'this index',
@@ -179,15 +224,15 @@ module.exports = {
             filename:'about.html',
             template: './template/index.html'
         }),
-
-
-
+    
+    
+    
         //提取公共样式
         new MiniCssExtractPlugin({
             filename: isProd ? '[name].css' : '[name].min.css',
             chunkFilename: isProd ? '[name].css' : '[name].min.css',
         }),
-
+    
         new webpack.NamedModulesPlugin(),  //显示被热更新的模块名称
         new webpack.HotModuleReplacementPlugin({
             options:{},
@@ -195,18 +240,25 @@ module.exports = {
             fullBuildTimeout:200,   //当 multiStep 启用时，表示两步构建之间的延时。
             requestTimeout:10000
         }),
-
+    
         //生成 https://webpack.github.io/analyse/ 分析文件
         new StatsPlugin('../analyse.json', {
             chunkModules: true,
             exclude: [/node_modules[\\\/]vue/]
         }),
-        // new BundleAnalyzerPlugin({
-        //     defaultSizes:'gzip',
-        //     logLevel:'warn'
-        // })
+        new BundleAnalyzerPlugin({
+            defaultSizes:'gzip',
+            logLevel:'warn'
+        }),
+        new Jarvis({
+            port: 1337,
+            host:'0.0.0.0',
+            open:true
+        })
     ],
     //devtool:false,
+    cache:{},//缓存生成的 webpack 模块和 chunk，来改善构建速度
+    recordsPath: path.join(__dirname, "../records.json"),
     devServer:{
         host:'localhost',
         port:8088,
@@ -236,9 +288,7 @@ module.exports = {
         // },
         contentBase:path.join(__dirname,'../public'),     //静态资源目录
         //统计信息
-        stats:{
-            
-        },
+        //stats:'errors-only',
         //代理
         proxy:{
 

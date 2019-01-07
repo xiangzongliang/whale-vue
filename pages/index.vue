@@ -1,7 +1,7 @@
 <template>
   <div class="example">{{ title }}
       <input v-model="inputVal"/>
-      ddsd
+      dsadads
       <img src="@/assets/images/big_icon.png" alt="">
       <span @click="postMsg">发送信息</span>
   </div>
@@ -41,6 +41,7 @@ export default {
     },
     methods:{
         postMsg(){
+
             // navigator.serviceWorker.controller.postMessage(this.inputVal);
             // console.log(this.inputVal)
         }
