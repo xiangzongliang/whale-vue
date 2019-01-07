@@ -1,15 +1,19 @@
-var CACHE_NAME = '这是一个缓存';
-var urlsToCache = [
-    '/admin.js'
-];
+var CACHE_NAME = 'geiwugaf32giu3gru';
+var cacheFileList = [
+    '/index.html',
+    '/js/index.chunk.js',
+    '/js/vendor.chunk.js',
+    '/js/common.chunk.js',
+    '/js/vendors_css.chunk.js',
+    '/js/whale_index.bundle.js',
+    '/img/big_icon.png',
+]
 self.addEventListener('install', function(event) {
-	console.log('被安装之后触发事件')
-	  
-
+    console.log('被安装之后触发事件')
+    // caches.delete(cacheFileList)
     event.waitUntil( // event.waitUtil 用于在安装成功之前执行一些预装逻辑
         caches.open(CACHE_NAME).then(function(cache) {
-            console.log('Opened cache');
-            return cache.addAll(urlsToCache);
+            return cache.addAll(cacheFileList);
         })
     );
 });
@@ -21,9 +25,19 @@ self.addEventListener('waiting',event=>{
 
 
 self.addEventListener('activate',event=>{
-	console.log('进入了激活状态')
+    console.log('进入了激活状态')
 })
 
 self.addEventListener('fetch', event => {
-	console.log('浏览器发起请求了')
+    console.log('浏览器发起请求了')
+    event.respondWith(
+        //去缓存中查询对应的请求
+        caches.match(event.request).then(response=>{
+            if(response){
+                return response
+            }
+            //否则就用fetch下载资源
+            return fetch(event.request)
+        })
+    )
 })

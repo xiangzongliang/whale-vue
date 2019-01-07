@@ -1,6 +1,6 @@
 <template>
     <div class="text">
-        dhusaidsuhduadsi
+        dsadasdsa
     </div>
 </template>
 <style scoped>

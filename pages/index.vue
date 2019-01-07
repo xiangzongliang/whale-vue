@@ -20,23 +20,33 @@ export default {
         }
     },
     mounted(){
-        if (false && 'serviceWorker' in navigator) {
-            return;
-        // 有原生支持时，在页面加载后开启新的 Service Worker 线程，从而优化首屏加载速度
-            window.addEventListener('load', function() {
-            // register 方法里第一个参数为 Service Worker 要加载的文件；第二个参数 scope 可选，用来指定 Service Worker 控制的内容的子目录
+        //使用 Service Workers实现文件缓存技术
+        if (navigator.serviceWorker) {
+            window.addEventListener('DOMContentLoaded',function(){
                 navigator.serviceWorker.register('./ServiceWorker.js',{scope: '/'}).then(function(registration) {
                     console.log('ServiceWorker 注册成功 ', registration.scope);
-
-                    //接收信息
-                    navigator.serviceWorker.addEventListener('message', function (event) {
-                        console.log(event)
-                    })
-
                 }).catch(function(err) {
                     console.log('Service Worker 注册失败 failed: ', err);
                 });
-            });
+            })
+
+        //     return;
+        // // 有原生支持时，在页面加载后开启新的 Service Worker 线程，从而优化首屏加载速度
+        //     window.addEventListener('load', function() {
+        //     // register 方法里第一个参数为 Service Worker 要加载的文件；第二个参数 scope 可选，用来指定 Service Worker 控制的内容的子目录
+        //         navigator.serviceWorker.register('./ServiceWorker.js',{scope: '/'}).then(function(registration) {
+        //             console.log('ServiceWorker 注册成功 ', registration.scope);
+
+        //             //接收信息
+        //             navigator.serviceWorker.addEventListener('message', function (event) {
+        //                 console.log(event)
+        //             })
+
+        //         }).catch(function(err) {
+        //             console.log('Service Worker 注册失败 failed: ', err);
+        //         });
+        //     });
+        // }
         }
     },
     methods:{

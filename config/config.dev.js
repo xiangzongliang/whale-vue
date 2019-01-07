@@ -1,4 +1,4 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin'); //通过 npm 安装
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");    //抽离并提取公共样式
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -33,7 +33,7 @@ threadLoader.warmup({
 
 
 
-const OPEN_THREAD = os.cpus().length;  //计划开启几个线程处理
+const OPEN_THREAD = 1 || os.cpus().length;  //计划开启几个线程处理
 console.log(`开启了${OPEN_THREAD}个线程处理项目`);
 
 
@@ -51,7 +51,7 @@ module.exports = {
     mode: process.env.APP_ENV == 'dev' ? 'development' : 'production', //production  development
     target: 'web',// 'web', // <=== 默认是 'web'，可省略
     entry: {
-        index:'./pages/index.js',
+        index:'./pages',
         about:'./pages/about.js',
     },
     output: {
@@ -168,7 +168,7 @@ module.exports = {
                             loader: "file-loader",
                             options: {
                                 name:'[name].[ext]',
-                                publicPath:'./img',
+                                publicPath:'../img',
                                 outputPath:'./img'
                             }
                         },
@@ -182,7 +182,7 @@ module.exports = {
                 loader: 'file-loader',
                 options: {
                     name:'[name].[ext]',
-                    publicPath:'./fonts',
+                    publicPath:'../fonts',
                     outputPath:'./fonts'
                 }
             }]
@@ -207,7 +207,7 @@ module.exports = {
             chunks:['index','common','vendor','whale_index','vendors_css'],
             filename:'index.html',
             minify:true,    //对html进行压缩,默认false
-            hash:true,      //默认false
+            //hash:false,      //默认false
             template: './template/index.html',
             chunksSortMode:"dependency"
             /**
@@ -220,7 +220,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             title:'this about',
-            chunks:['about','common','vendor','whale_about','vendors_css'],
+            //chunks:['about','common','vendor','whale_about','vendors_css'],
             filename:'about.html',
             template: './template/index.html'
         }),
@@ -229,8 +229,8 @@ module.exports = {
     
         //提取公共样式
         new MiniCssExtractPlugin({
-            filename: isProd ? '[name].css' : '[name].min.css',
-            chunkFilename: isProd ? '[name].css' : '[name].min.css',
+            filename: isProd ? '[name].css' : 'css/[name].min.css',
+            chunkFilename: isProd ? '[name].css' : 'css/[name].min.css',
         }),
     
         new webpack.NamedModulesPlugin(),  //显示被热更新的模块名称
@@ -242,21 +242,21 @@ module.exports = {
         }),
     
         //生成 https://webpack.github.io/analyse/ 分析文件
-        new StatsPlugin('../analyse.json', {
-            chunkModules: true,
-            exclude: [/node_modules[\\\/]vue/]
-        }),
-        new BundleAnalyzerPlugin({
-            defaultSizes:'gzip',
-            logLevel:'warn'
-        }),
+        // new StatsPlugin('../analyse.json', {
+        //     chunkModules: true,
+        //     exclude: [/node_modules[\\\/]vue/]
+        // }),
+        // new BundleAnalyzerPlugin({
+        //     defaultSizes:'gzip',
+        //     logLevel:'warn'
+        // }),
         new Jarvis({
             port: 1337,
             host:'0.0.0.0',
             open:true
         })
     ],
-    //devtool:false,
+    devtool:false,  //直接关闭，使用VUE调试
     cache:{},//缓存生成的 webpack 模块和 chunk，来改善构建速度
     recordsPath: path.join(__dirname, "../records.json"),
     devServer:{
