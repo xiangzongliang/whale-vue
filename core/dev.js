@@ -3,6 +3,7 @@ const BASE = require('./base.js');
 
 const path = require('path');
 const webpack = require('webpack'); 
+const HappyPack = require('happypack');
 const Jarvis = require("webpack-jarvis");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const WebpackMerge = require('webpack-merge');
@@ -30,15 +31,16 @@ module.exports = (env, args) => {
     let webpackDevConfig = WebpackMerge(BASE,{
         module:{
             rules:[{
+                    enforce: 'pre',
+                    test: /\.(js|vue)$/,
+                    loader: 'eslint-loader',
+                    exclude: /node_modules/
+                  },{
                     test: /\.(sa|sc|c)ss$/,
-                    //exclude: /node_modules/,
-                    //include: path.resolve(__dirname,'../'),
                     use: [ 'style-loader' ,'css-loader', 'sass-loader' ],
                 },{
                     test: /\.less$/,
-                    //exclude: /node_modules/,
-                    //include: path.resolve(__dirname,'../'),
-                    use: ['style-loader', 'css-loader', 'less-loader' ],
+                    use: ['happypack/loader?id=lesstocss'],
                 }]
         },
 
@@ -50,10 +52,10 @@ module.exports = (env, args) => {
                 fullBuildTimeout:200,   //当 multiStep 启用时，表示两步构建之间的延时。
                 requestTimeout:10000
             }),
-            new BundleAnalyzerPlugin({
-                defaultSizes:'gzip',
-                logLevel:'warn'
-            }),
+            // new BundleAnalyzerPlugin({
+            //     defaultSizes:'gzip',
+            //     logLevel:'warn'
+            // }),
 
             new Jarvis({
                 port: 1337,

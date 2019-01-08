@@ -13,7 +13,7 @@
 export default {
     data(){
         return{
-            title:'dsadsadsaddad',
+            title:'4627863728husid',
             name:1213,
             inputVal:'',
 

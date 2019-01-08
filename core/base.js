@@ -106,10 +106,11 @@ module.exports = {
             {
                 loader: 'vue-loader',
                 options: {
+                    //hotReload: false, // false 关闭热重载 默认 true (服务端渲染的时候需要关闭热重载)
                     loaders: {
                         js: 'happypack/loader?id=babel',
                         css:{
-                            use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'css-loader','postcss-loader' ],
+                            use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'vue-style-loader', 'css-loader','postcss-loader' ],
                             fallback: 'vue-style-loader'
                         }
                     },
@@ -167,7 +168,14 @@ module.exports = {
             loaders: [ 'cache-loader','babel-loader?cacheDirectory' ],// 2、babel-loader支持缓存转换出的结果，通过cacheDirectory选项开启
             //允许 HappyPack 输出日志 ,默认true
             //verbose: true,
-            //threadPool: happyThreadPool,
+            threadPool: happyThreadPool,
+        }),
+        new HappyPack({
+            id: 'lesstocss',
+            cache: true,
+            threads: UTILS.open_thread,
+            loaders: [ 'style-loader', 'css-loader', 'less-loader' ], 
+            threadPool: happyThreadPool,
         }),
         // 生成html页面
         ...UTILS.htmlPlugins()
