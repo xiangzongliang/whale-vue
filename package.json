@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "APP_ENV=dev webpack-dev-server --config config/config.dev.js",
-    "prd": "APP_ENV=prd webpack-dev-server --config config/config.befor.js",
-    "build": "APP_ENV=build webpack --config config/config.dev.js",
+    "dev2": "APP_ENV=dev webpack-dev-server --config config/config.dev.js",
+    "dev": "APP_ENV=dev webpack-dev-server --config core/dev.js",
+    "prd": "APP_ENV=build webpack --config core/build.js",
+    "build": "APP_ENV=build webpack --config core/build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -52,7 +53,8 @@
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
-    "webpack-jarvis": "^0.3.2"
+    "webpack-jarvis": "^0.3.2",
+    "webpack-merge": "^4.2.1"
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",

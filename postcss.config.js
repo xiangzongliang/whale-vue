@@ -7,7 +7,7 @@ module.exports = ({ file, options, env }) => {
             },
 
 
-            'cssnano': true || env === 'production',
+            'cssnano': env === 'production',
 
 
             //px 转 rem
