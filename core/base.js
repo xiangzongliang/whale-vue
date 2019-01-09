@@ -50,18 +50,18 @@ module.exports = {
             minSize: 30000,
             cacheGroups: { //缓存组 ,可以替换默认的配置
                 //default:false, //将最少重复引用两次的模块放入default中
-                charts: {
-                    test: /[\/]node_modules[\/]echarts/, // <- window | mac -> /node_modules/vue/
-                    name: "charts",
-                    chunks: 'initial', // 'initial', 'async', 'all',
-                    priority: 80,
-                },
                 vue: {
                     test: /([\/]node_modules[\/]vue)/, // <- window | mac -> /node_modules/vue/
                     name: 'vue-vendor',
                     chunks: 'initial', // 'initial', 'async', 'all',
                     priority: 100,
                     enforce: true,
+                },
+                charts: {
+                    test: /[\/]node_modules[\/]echarts/, // <- window | mac -> /node_modules/vue/
+                    name: "charts",
+                    chunks: 'initial', // 'initial', 'async', 'all',
+                    priority: 90,
                 },
                 vendor: {
                     test: /[\\/]node_modules[\\/]/, //匹配过滤  合并了node_modoles的js
@@ -72,7 +72,7 @@ module.exports = {
                     //minChunks: 1,         //表示被引用次数，默认为1；
                     //maxAsyncRequests:     //最大的按需(异步)加载次数，默认为1；
                     //maxInitialRequests:   //最大的初始化加载次数，默认为1；
-                    priority: 90,             // 该配置项是设置处理的优先级，数值越大越优先处理
+                    priority: 80,             // 该配置项是设置处理的优先级，数值越大越优先处理
                     enforce: true,
                 },
                 common:{
