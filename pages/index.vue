@@ -2,7 +2,7 @@
   <div class="example">{{ title }}
       <input v-model="inputVal"/>
       dsadads
-      <img src="@/assets/images/big_icon.png" alt="">
+      <img src="@/assets/images/rankboard_icon.png" alt="">
       <span @click="postMsg">发送信息</span>
   </div>
 </template>
@@ -16,7 +16,6 @@ export default {
             title:'4627863728husid',
             name:1213,
             inputVal:'',
-
         }
     },
     mounted(){
@@ -40,8 +39,9 @@ export default {
 <style scoped>
 .example{
     background: #33b5e5;
-    font-size: 12px;
-    padding: 10px;
+    position: fixed;
+    height: 100%;
+    overflow: hidden;
 }
 </style>
 

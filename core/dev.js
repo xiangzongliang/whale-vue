@@ -3,7 +3,6 @@ const BASE = require('./base.js');
 
 const path = require('path');
 const webpack = require('webpack'); 
-const HappyPack = require('happypack');
 const Jarvis = require("webpack-jarvis");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const WebpackMerge = require('webpack-merge');
@@ -31,17 +30,17 @@ module.exports = (env, args) => {
     let webpackDevConfig = WebpackMerge(BASE,{
         module:{
             rules:[{
-                    enforce: 'pre',
-                    test: /\.(js|vue)$/,
-                    loader: 'eslint-loader',
-                    exclude: /node_modules/
-                  },{
-                    test: /\.(sa|sc|c)ss$/,
-                    use: [ 'style-loader' ,'css-loader', 'sass-loader' ],
-                },{
-                    test: /\.less$/,
-                    use: ['happypack/loader?id=lesstocss'],
-                }]
+                        enforce: 'pre',
+                        test: /\.(js|vue)$/,
+                        loader: 'eslint-loader',
+                        exclude: /node_modules/
+                    },{
+                        test: /\.(sa|sc|c)ss$/,
+                        use: [ 'style-loader' ,'css-loader', 'sass-loader' ],
+                    },{
+                        test: /\.less$/,
+                        use: [ 'style-loader', 'css-loader', 'less-loader' ],
+                    }]
         },
 
         plugins:[
@@ -55,6 +54,9 @@ module.exports = (env, args) => {
             // new BundleAnalyzerPlugin({
             //     defaultSizes:'gzip',
             //     logLevel:'warn'
+            // }),
+            // new webpack.DllReferencePlugin({
+            //     manifest: require('../vendor-manifest.json')
             // }),
 
             new Jarvis({

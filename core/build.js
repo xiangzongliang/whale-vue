@@ -3,6 +3,7 @@ const BASE = require('./base.js');
 
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WebpackMerge = require('webpack-merge');
 
@@ -30,6 +31,10 @@ module.exports = (env, args) => {
             new MiniCssExtractPlugin({
                 filename: 'css/[name].min.css',
                 chunkFilename: 'css/[name].min.css',
+            }),
+            new BundleAnalyzerPlugin({
+                defaultSizes:'gzip',
+                logLevel:'warn'
             }),
         ]
     });

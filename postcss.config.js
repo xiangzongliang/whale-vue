@@ -3,6 +3,7 @@ module.exports = ({ file, options, env }) => {
          plugins: {
             //解析CSS并使用Can I Use中的值将供应商前缀添加到CSS规则  
             'autoprefixer':{ 
+                browsers: ["last 5 version","Android >= 4.0"],
                 grid: "autoplace",
             },
 

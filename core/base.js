@@ -10,7 +10,6 @@ const HappyPack = require('happypack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin"); 
 const happyThreadPool = HappyPack.ThreadPool({ size: UTILS.open_thread }); //happypack多个实例的时候，共享线程池，以达到资源的最小消耗
 
-
 module.exports = {
     mode: isProd ? 'development' : 'production',
     target: 'web',// 'web', // <=== 默认是 'web'，可省略
@@ -18,7 +17,7 @@ module.exports = {
     output: {
         filename: './js/[name].js',
         chunkFilename: './js/[name].js',
-        path: path.resolve(__dirname, '../build')
+        path: path.resolve(__dirname, '../build/')
     },
     resolve:{
         modules: [path.resolve(__dirname,'../node_modules')],  //指明包模块的加载路径，避免层层查找的消耗（也就是说webpack去那个目录下面查找三方的包模块）
@@ -52,44 +51,43 @@ module.exports = {
             cacheGroups: { //缓存组 ,可以替换默认的配置
                 //default:false, //将最少重复引用两次的模块放入default中
                 charts: {
-                    chunks: 'async', // 'initial', 'async', 'all',
                     test: /[\/]node_modules[\/]echarts/, // <- window | mac -> /node_modules/vue/
                     name: "charts",
-                    priority: 20,
+                    chunks: 'initial', // 'initial', 'async', 'all',
+                    priority: 80,
                 },
                 vue: {
-                    chunks: 'initial', // 'initial', 'async', 'all',
-                    test: /[\/]node_modules[\/]vue/, // <- window | mac -> /node_modules/vue/
+                    test: /([\/]node_modules[\/]vue)/, // <- window | mac -> /node_modules/vue/
                     name: 'vue-vendor',
-                    priority: -9,
+                    chunks: 'initial', // 'initial', 'async', 'all',
+                    priority: 100,
                     enforce: true,
                 },
                 vendor: {
-                    test: /node_modules/,
+                    test: /[\\/]node_modules[\\/]/, //匹配过滤  合并了node_modoles的js
                     chunks: 'initial', // 'initial', 'async', 'all'
-                    //test: /[\\/]node_modules[\\/]/, //匹配过滤  合并了node_modoles的js
                     //chunks: 'all',      //initial(初始块)、async(按需加载块)、all(全部块)，默认为all;
                     name: 'vendor',        //拆分块的名称
                     //minSize: 1024*10,     //表示在压缩前的最小模块大小，默认为0；
                     //minChunks: 1,         //表示被引用次数，默认为1；
                     //maxAsyncRequests:     //最大的按需(异步)加载次数，默认为1；
                     //maxInitialRequests:   //最大的初始化加载次数，默认为1；
-                    priority: -10,             // 该配置项是设置处理的优先级，数值越大越优先处理
+                    priority: 90,             // 该配置项是设置处理的优先级，数值越大越优先处理
                     enforce: true,
                 },
                 common:{
-                    test: /[\\/]assets\/js[\\/]/,
                     name: 'common',
                     chunks: 'initial',
-                    //minChunks: 2,
-                    priority: 1,
+                    minChunks: 3,
+                    priority: 70,
                     enforce: true,
                     //reuseExistingChunk: true //表示可以使用已经存在的块，即如果满足条件的块已经存在就使用已有的，不再创建一个新的块。
                 },
                 styles: {
                     name: 'vendors_css',
                     test: /\.(sc|c|sa|le)ss$/,
-                    chunks: 'all',
+                    chunks: 'initial',
+                    priority: 0,
                     enforce: true,          // 如果cacheGroup中没有设置minSize，则据此判断是否使用上层的minSize，true：则使用0，false：使用上层minSize
                 }
             }
@@ -110,7 +108,7 @@ module.exports = {
                     loaders: {
                         js: 'happypack/loader?id=babel',
                         css:{
-                            use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'vue-style-loader', 'css-loader','postcss-loader' ],
+                            use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'vue-style-loader', 'postcss-loader','css-loader' ],
                             fallback: 'vue-style-loader'
                         }
                     },
@@ -124,7 +122,7 @@ module.exports = {
         },{
             test: /\.(png|svg|jpg|jpeg|gif)$/,
             exclude: /node_modules/,
-            include: path.resolve(__dirname,'../assets/'),
+            include: path.resolve(__dirname,'../'),
             use: [
                 {
                     loader: 'url-loader',  //对于一些较小的文件采用base64编码
@@ -134,8 +132,8 @@ module.exports = {
                             loader: "file-loader",
                             options: {
                                 name:'[name].[ext]',
-                                publicPath:'../img',
-                                outputPath:'./img'
+                                publicPath: '../img',
+                                outputPath: './img'
                             }
                         },
                         
@@ -148,8 +146,8 @@ module.exports = {
                 loader: 'file-loader',
                 options: {
                     name:'[name].[ext]',
-                    publicPath:'../fonts',
-                    outputPath:'./fonts'
+                    publicPath: '../fonts',
+                    outputPath: './fonts'
                 }
             }]
         }]
@@ -157,7 +155,7 @@ module.exports = {
     plugins:[
         new VueLoaderPlugin(),
         new webpack.DefinePlugin({
-            'process.env.BASE_URL': JSON.stringify(path.resolve(__dirname,'../')),
+            'process.env.BASE_URL': JSON.stringify(path.join(__dirname,'../')),
             'process.env.VUE_APP_ENV': JSON.stringify(process.env.VUE_APP_ENV),
             'process.env.APP_ENV': JSON.stringify(process.env.APP_ENV)
         }),
@@ -168,13 +166,6 @@ module.exports = {
             loaders: [ 'cache-loader','babel-loader?cacheDirectory' ],// 2、babel-loader支持缓存转换出的结果，通过cacheDirectory选项开启
             //允许 HappyPack 输出日志 ,默认true
             //verbose: true,
-            threadPool: happyThreadPool,
-        }),
-        new HappyPack({
-            id: 'lesstocss',
-            cache: true,
-            threads: UTILS.open_thread,
-            loaders: [ 'style-loader', 'css-loader', 'less-loader' ], 
             threadPool: happyThreadPool,
         }),
         // 生成html页面

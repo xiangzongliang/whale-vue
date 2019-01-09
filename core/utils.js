@@ -23,13 +23,45 @@ const w_plugins = (env) =>{
 const w_htmlPlugin = () =>{
     let htmlPlugin = []
     for(k in PAGES){
+        let default_chunks = ['common','vue-vendor','charts','vendor',`${k}`,`whale_${k}`,'vendors_css'],
+            chunks = [],
+            excludeChunks = [];
+
+
+        //自定义 chunks
+        if(PAGES[k].chunks){
+            if(PAGES[k].chunks instanceof Array){
+                chunks = PAGES[k].chunks
+            }else if(PAGES[k].chunks instanceof Function){
+                chunks = PAGES[k].chunks(default_chunks) 
+                if(!(chunks instanceof Array && chunks.length >0)){ //如果方法没有返回对应的数组则使用默认值
+                    chunks = default_chunks
+                }
+            }else{
+                chunks = default_chunks
+            }
+            
+        }
+
+
+        //需要自定义排除的 chunks, 也就是 html-webpack-plugin自带的 excludeChunks 功能
+        if(PAGES[k].excludeChunks){
+
+        }
+
+
+
         htmlPlugin.push(new HtmlWebpackPlugin({
-            title: PAGES[k].title || '',
-            chunks:[`${k}`,'common','vue-vendor','charts','vendor',`whale_${k}`,'vendors_css'],
+            title: PAGES[k].title || 'title',
+            chunks: chunks,
             filename:`${k}.html`,
-            minify:true,    //对html进行压缩,默认false
-            //hash:false,      //默认false
-            template: PAGES[k].template || '',
+            minify: {
+                removeComments: true,       //Strip HTML comments
+                collapseWhitespace: true,   //折叠有助于文档树中文本节点的空白区域
+            },    //对html进行压缩,默认false
+            hash: PAGES[k].hash === true ? true : false,      //默认false
+            template: PAGES[k].template,
+            excludeChunks: excludeChunks
             // chunksSortMode:"dependency"
             /**
              * 'dependency' 按照不同文件的依赖关系来排序。
