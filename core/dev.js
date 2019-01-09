@@ -72,7 +72,7 @@ module.exports = (env, args) => {
             hot:true,       //热更新
             //hotOnly:true,
             //lazy:false,     //  惰性模式
-            inline:true,
+            inline: true,
             watchOptions:{
                 //aggregateTimeout:500,// 监听到变化后等300ms再去执行动作
                 ignored:/node_modules/,// 不监听的文件或文件夹，支持正则匹配

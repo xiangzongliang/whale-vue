@@ -8,7 +8,7 @@
     "dev": "APP_ENV=dev webpack-dev-server --config core/dev.js",
     "prd": "APP_ENV=build webpack --config core/build.js",
     "lint": "eslint --fix pages/**/*.js pages/**/*",
-    "build": "APP_ENV=build webpack --config core/build.js",
+    "build": "APP_ENV=build webpack --display-used-exports --display-optimization-bailout --config core/build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

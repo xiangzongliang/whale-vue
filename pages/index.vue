@@ -4,6 +4,7 @@
       dsadads
       <img src="@/assets/images/rankboard_icon.png" alt="">
       <span @click="postMsg">发送信息</span>
+      dgsauidgsuay
   </div>
 </template>
 <script>
@@ -41,6 +42,7 @@ export default {
     background: #33b5e5;
     position: fixed;
     height: 100%;
+    width: 100%;
     overflow: hidden;
 }
 </style>

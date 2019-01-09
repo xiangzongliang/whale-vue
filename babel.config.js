@@ -12,6 +12,7 @@ const presets = [
                 android:"4.0",
                 node:"8.0.0"
             },
+            modules:false,
             useBuiltIns: "usage",
         },
     ]

@@ -3,11 +3,12 @@ const isProd = process.env.APP_ENV === 'dev'
 
 
 
+
 const webpack = require('webpack');
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HappyPack = require('happypack');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin"); 
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const happyThreadPool = HappyPack.ThreadPool({ size: UTILS.open_thread }); //happypack多个实例的时候，共享线程池，以达到资源的最小消耗
 
 module.exports = {
@@ -32,15 +33,14 @@ module.exports = {
     resolveLoader:{ //webpack 如何去寻找 loader
         modules: [ path.resolve(__dirname,'../node_modules') ],
         extensions: [ '.js', '.json' ],     //默认
-        mainFields: [ 'loader', 'main' ]    //默认
+        mainFields: [ 'jsnext:main', 'browser', 'main' ]    //默认
     },
     devtool:false,  //直接关闭，使用VUE调试
     cache:{},//缓存生成的 webpack 模块和 chunk，来改善构建速度
     optimization: { //优化
         minimize: !isProd,  //告诉webpack使用UglifyjsWebpackPlugin最小化捆绑包。
-        namedModules: true,
+        //namedModules: true,     //Tells webpack to use readable module identifiers for better debugging. When optimization.namedModules is not set in webpack config, webpack will enable it by default for mode development and disable for mode production.
         noEmitOnErrors: true,       //在 webpack 编译代码出现错误时并不会退出 webpack 
-
         runtimeChunk:{  // 仅包含运行时的每个入口点添加一个额外的块  也就是 manifest 文件块
             name: entrypoint => {
                 return `whale_${entrypoint.name}`
@@ -127,7 +127,7 @@ module.exports = {
                 {
                     loader: 'url-loader',  //对于一些较小的文件采用base64编码
                     options: {
-                        limit: 1024 * 4,   //对 4KB 以下文件进行处理（⚠️ ！ 但是会被打包到JS中）
+                        limit: 1024 * 5,   //对 4KB 以下文件进行处理（⚠️ ！ 但是会被打包到JS中）
                         fallback:{
                             loader: "file-loader",
                             options: {
@@ -157,7 +157,8 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env.BASE_URL': JSON.stringify(path.join(__dirname,'../')),
             'process.env.VUE_APP_ENV': JSON.stringify(process.env.VUE_APP_ENV),
-            'process.env.APP_ENV': JSON.stringify(process.env.APP_ENV)
+            'process.env.APP_ENV': JSON.stringify(process.env.APP_ENV),
+            'process.env.NODE_ENV': JSON.stringify(isProd ? 'development' : 'production'),
         }),
         new HappyPack({
             id: 'babel',

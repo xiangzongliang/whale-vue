@@ -32,10 +32,10 @@ module.exports = (env, args) => {
                 filename: 'css/[name].min.css',
                 chunkFilename: 'css/[name].min.css',
             }),
-            new BundleAnalyzerPlugin({
-                defaultSizes:'gzip',
-                logLevel:'warn'
-            }),
+            // new BundleAnalyzerPlugin({
+            //     defaultSizes:'gzip',
+            //     logLevel:'warn'
+            // }),
         ]
     });
     return webpackDevConfig
