@@ -2,11 +2,11 @@ const os = require('os');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const open_thread = os.cpus().length;  //计划开启几个线程处理
 
-
 const PAGES = require('../config/pages');
 
+
 //页面的计算
-const w_pages = () => {
+const w_pages = (env) => {
     let callback_pages = {}
     for(k in PAGES){
         callback_pages[k] = PAGES[k].entry
@@ -14,10 +14,21 @@ const w_pages = () => {
     return callback_pages
 }
 
-//插件的使用
-const w_plugins = (env) =>{
 
+
+const isTypeof = agu =>{
+    //let isobj = /^(number|string|undefined)$/
+    if(agu instanceof Array){
+        return 'arr'
+    }else if(agu instanceof Function){
+        return 'fun'
+    }else if(agu instanceof RegExp){
+        return 'reg'
+    }else{
+        return 'nono'
+    }
 }
+
 
 //html-webpack-plugin
 const w_htmlPlugin = () =>{
@@ -27,26 +38,48 @@ const w_htmlPlugin = () =>{
             chunks = [],
             excludeChunks = [];
 
-
-        //自定义 chunks
+        /**
+         * 自定义 chunks
+         * type : array | function
+         */
         if(PAGES[k].chunks){
-            if(PAGES[k].chunks instanceof Array){
+            let chunksType = isTypeof(PAGES[k].chunks);
+
+            if(chunksType === 'arr'){
                 chunks = PAGES[k].chunks
-            }else if(PAGES[k].chunks instanceof Function){
+            }else if(chunksType === 'fun'){
                 chunks = PAGES[k].chunks(default_chunks) 
-                if(!(chunks instanceof Array && chunks.length >0)){ //如果方法没有返回对应的数组则使用默认值
+                if(!(isTypeof(chunks) === 'arr' && chunks.length >0)){ //如果方法没有返回对应的数组则使用默认值
                     chunks = default_chunks
                 }
             }else{
                 chunks = default_chunks
-            }
-            
+            } 
+        }else{
+            chunks = default_chunks
         }
 
 
-        //需要自定义排除的 chunks, 也就是 html-webpack-plugin自带的 excludeChunks 功能
+        /**
+         * html-webpack-plugin ==> excludeChunks
+         * type : array | function | RegExp 
+         */
         if(PAGES[k].excludeChunks){
-
+            let ecType = isTypeof(PAGES[k].excludeChunks);
+            if(ecType === 'arr'){
+                excludeChunks = PAGES[k].excludeChunks
+            }else if(ecType === 'fun'){
+                excludeChunks = PAGES[k].excludeChunks(default_chunks)
+                if(!(isTypeof(excludeChunks) === 'arr' && excludeChunks.length>0)){ //如果方法没有返回值
+                    excludeChunks = []
+                }
+            }else if(ecType === 'reg'){ //如果是正则表达式
+                default_chunks.map((val,key)=>{
+                    if(PAGES[k].excludeChunks.test(val)){
+                        excludeChunks.push(val)
+                    }
+                })
+            }
         }
 
 
@@ -61,7 +94,8 @@ const w_htmlPlugin = () =>{
             },    //对html进行压缩,默认false
             hash: PAGES[k].hash === true ? true : false,      //默认false
             template: PAGES[k].template,
-            excludeChunks: excludeChunks
+            excludeChunks: excludeChunks,
+            favicon:PAGES[k].favicon || ''
             // chunksSortMode:"dependency"
             /**
              * 'dependency' 按照不同文件的依赖关系来排序。
@@ -78,6 +112,5 @@ const w_htmlPlugin = () =>{
 module.exports = {
     open_thread,
     pages: w_pages,
-    plugins: w_plugins,
     htmlPlugins: w_htmlPlugin
 }

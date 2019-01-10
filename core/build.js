@@ -8,8 +8,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WebpackMerge = require('webpack-merge');
 
 
-
-
 module.exports = (env, args) => {
     let webpackDevConfig = WebpackMerge(BASE,{
         module:{
@@ -22,12 +20,10 @@ module.exports = (env, args) => {
                 }]
         },
         plugins:[
-            //复制静态文件
             new CopyWebpackPlugin([{
                   from: path.resolve(__dirname, '../public'),
                   to: path.resolve(__dirname, '../build'),
               }]),
-            //提取公共样式
             new MiniCssExtractPlugin({
                 filename: 'css/[name].min.css',
                 chunkFilename: 'css/[name].min.css',

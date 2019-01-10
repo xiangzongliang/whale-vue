@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev2": "APP_ENV=dev webpack-dev-server --config config/config.dev.js",
     "dev": "APP_ENV=dev webpack-dev-server --config core/dev.js",
     "prd": "APP_ENV=build webpack --config core/build.js",
+    "build": "APP_ENV=build webpack --config core/build.js",
     "lint": "eslint --fix pages/**/*.js pages/**/*",
-    "build": "APP_ENV=build webpack --display-used-exports --display-optimization-bailout --config core/build.js",
+    "used": "APP_ENV=build webpack --display-used-exports --display-optimization-bailout --config core/build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -64,6 +64,7 @@
   "dependencies": {
     "@babel/polyfill": "7.2.5",
     "@babel/runtime": "7.2.0",
-    "vue": "^2.5.21"
+    "vue": "^2.5.21",
+    "vue-router": "^3.0.2"
   }
 }

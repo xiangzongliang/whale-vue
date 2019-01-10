@@ -1,11 +1,10 @@
 module.exports = {
 	index: {
-        title:'龙虎榜首页',
+        title:'whale-vue 基于 webpack4 的 vue 大型多页项目脚手架',
 		entry: './pages/index.js',
 		template: './template/index.html',
-		chunks:(chunks)=>{
-            return chunks
-        }
+        //chunks
+        //excludeChunks
     },
     about:{
         title:'this about',
