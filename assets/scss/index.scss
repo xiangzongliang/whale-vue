@@ -1,3 +1,14 @@
+@charset "utf-8";
+
+$line-height: .8rem;
+$bg-color:#e95d25;
+
+$tit-fsz:0.28rem;
+$content-fsz:.26rem;
+$content-fsz-color:#333;
+
+
+
 *,body,html{
     padding: 0;
     margin: 0;
@@ -6,6 +17,7 @@ body{
     font-family: Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
     word-spacing: 1px;
     font-size: 0.333rem;
+    -webkit-font-smoothing: antialiased;
 }
 input{
     outline:none;
@@ -31,3 +43,6 @@ input{
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
     color:#c9c9c9;
 }
+
+@import './header.scss';
+@import './nav.scss';

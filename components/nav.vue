@@ -1,11 +1,59 @@
 <template>
     <div class="nav">
-        
+        <div class="version">1.0.0</div>
+        <ul>
+            <li 
+            v-for="(item,index) in navList"
+            :key="index"
+            :class="activeNav == item.key ? 'active' : ''"
+            @click="checkNav(item)">
+                <p>{{ item.name }}</p>
+                <template v-if="item.child">
+                    <div class="child">
+                        <p 
+                        v-for="(c_item,c_index) in item.child"
+                        :key="c_index"
+                        :class="activeChild == c_item.key ? 'child-active' : ''"
+                        @click.stop="checkChild(c_item)">{{ c_item.name }}</p>
+                    </div>
+                </template>
+                
+            </li>
+        </ul>
     </div>
 </template>
-<style lang="scss" scoped>
-.nav{
-    width: 100px;
+<script>
+export default {
+    data(){
+        return {
+            activeNav:'start',
+            activeChild:'VersionCompatibility',
+            navList:[{
+                key:'start',
+                name:'起步'
+            },{
+                key:'install',
+                name:'安装',
+                child:[{
+                    key:'VersionCompatibility',
+                    name:'版本的兼容性'
+                },{
+                    key:'otherInfo',
+                    name:'其他信息'
+                }]
+            }]
+        }
+    },
+    methods:{
+        checkNav(item){
+            this.activeNav = item.key
+            this.activeChild = item.child ? item.child[0].key : ''
+        },
+        checkChild(item){
+            this.activeChild = item.key
+        }
+    }
 }
-</style>
+</script>
+
 
