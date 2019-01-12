@@ -6,9 +6,9 @@ module.exports = {
         //chunks
         //excludeChunks
     },
-    about:{
-        title:'this about',
-		entry: './pages/about.js',
+    doc:{
+        title:'whale-vue 基于 webpack4 的 vue 大型多页项目脚手架 - 文档',
+		entry: './pages/doc.js',
 		template: './template/index.html',
     },
 }

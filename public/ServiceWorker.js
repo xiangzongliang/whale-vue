@@ -1,3 +1,17 @@
+//使用 Service Workers实现文件缓存技术
+if (navigator.serviceWorker) {
+    // window.addEventListener('DOMContentLoaded',function(){
+    //     navigator.serviceWorker.register('./ServiceWorker.js',{scope: '/'}).then(function(registration) {
+    //         console.log('ServiceWorker 注册成功 ', registration.scope);
+    //     }).catch(function(err) {
+    //         console.log('Service Worker 注册失败 failed: ', err);
+    //     });
+    // })
+}
+
+
+
+
 var CACHE_NAME = 'geiwugaf32giu3gru';
 var cacheFileList = [
     '/index.html',
