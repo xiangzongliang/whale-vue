@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import indexRouter from '@/router/index-router'
 import rem from '@/config/rem'
-import index from './index.vue'
+import introduction from './introduction.vue'
 import '@/assets/scss/index.scss';
 
 
@@ -14,7 +14,7 @@ let router = new Router(indexRouter)
 new Vue({
     router,
     el: '#app',
-    render: h => h(index),
+    render: h => h(introduction),
 })
 
 

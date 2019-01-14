@@ -1,9 +1,9 @@
 <template>
     <div>
         <router-view name="header"></router-view>
-        <div class="nav-content">
+        <div class="content">
             <router-view name="nav"></router-view>
-            <div class="content">
+            <div class="doc-content">
                 
             </div>
         </div>
@@ -17,12 +17,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.nav-content{
+.content{
     display: flex;
     flex-wrap: wrap;
     margin-top: 10vh;
 }
-.content{
+.doc-content{
     width: 70vw;
     word-wrap:break-word;
 }

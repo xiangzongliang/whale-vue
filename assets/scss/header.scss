@@ -13,8 +13,17 @@
         font-size: 0.5rem;
         line-height: $line-height;
         padding-left: 0.6rem;
-        font-weight: 800;
-        font-family: "Dosis", "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+        font-weight: 400;
+        font-family: Georgia, serif,"Dosis", "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+        position: relative;
+        padding-left: 2.8rem; 
+        img{
+            height: .7rem;
+            position: absolute;
+            top: 3px;
+            left: 0px;
+            margin-left: 1rem;
+        }
     }
     ul{
         padding-right: 0.2rem;

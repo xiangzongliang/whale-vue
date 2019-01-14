@@ -2,6 +2,7 @@
     <div>
         <div class="header">
             <h1>
+                <img src="@/assets/images/logo.png" alt="">
                 whale-vue
             </h1>
             
@@ -35,7 +36,7 @@ export default {
             },{
                 id:'3',
                 name:'支持',
-                link:'/'
+                link:'/support.html'
             }]
         }
     },

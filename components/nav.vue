@@ -1,6 +1,6 @@
 <template>
     <div class="nav">
-        <div class="version">1.0.0</div>
+        <div class="version">v1.0.0</div>
         <ul>
             <li 
             v-for="(item,index) in navList"
@@ -27,7 +27,7 @@ export default {
     data(){
         return {
             activeNav:'start',
-            activeChild:'VersionCompatibility',
+            activeChild:'',
             navList:[{
                 key:'start',
                 name:'起步'
@@ -41,6 +41,12 @@ export default {
                     key:'otherInfo',
                     name:'其他信息'
                 }]
+            },{
+                key:'structure',
+                name:'结构'
+            },{
+                key:'configure',
+                name:'配置'
             }]
         }
     },

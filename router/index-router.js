@@ -1,13 +1,13 @@
-import nav from '@/components/nav.vue'
 import header from '@/components/header.vue'
+import introduction from '@/components/introduction.vue'
 
 export default {
     routes:[{
         path: '/',
-        name: 'nav',
+        name: 'introduction',
         components:{
             header,
-            nav,
+            introduction
         }
     }]
 }
