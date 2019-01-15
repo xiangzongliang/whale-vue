@@ -1,18 +1,19 @@
 <template>
-    <div>
-        <router-view name="header"></router-view>
-        <div class="content">
-            <router-view name="nav"></router-view>
-            <div class="doc-content">
-                
-            </div>
-        </div>
-        
+  <div>
+    <router-view name="header" />
+    <div class="content">
+      <router-view name="nav" />
+      <div class="doc-content" />
     </div>
+  </div>
 </template>
-<script>
+<script type="text/javascript">
 export default {
     mounted(){
+        //console.log('dsdsd')
+        if(true) {
+            //
+        }
     }
 }
 </script>

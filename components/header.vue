@@ -1,24 +1,36 @@
 <template>
-    <div>
-        <div class="header">
-            <h1>
-                <img src="@/assets/images/logo.png" alt="">
-                whale-vue
-            </h1>
+  <div>
+    <div class="header">
+      <h1>
+        <img
+          src="@/assets/images/logo.png"
+          alt=""
+        >
+        whale-vue
+      </h1>
             
-            <ul>
-                <li v-for="(item,key) in navList" :key="key" @click="goPage(item)">{{ item.name }}</li>
-                <li class="search">
-                    <input type="text" placeholder="搜索">
-                    <img src='@/assets/icon/search.png'/>
-                </li>
-                <li class="github">
-                    <img src='@/assets/icon/github.png'/>
-                </li>
-            </ul>
-        </div>
-        <div class="csbg"> </div>
+      <ul>
+        <li
+          v-for="(item,key) in navList"
+          :key="key"
+          @click="goPage(item)"
+        >
+          {{ item.name }}
+        </li>
+        <li class="search">
+          <input
+            type="text"
+            placeholder="搜索"
+          >
+          <img src="@/assets/icon/search.png">
+        </li>
+        <li class="github">
+          <img src="@/assets/icon/github.png">
+        </li>
+      </ul>
     </div>
+    <div class="csbg" />
+  </div>
 </template>
 <script>
 export default {

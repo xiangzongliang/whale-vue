@@ -114,7 +114,7 @@ module.exports = {
             include: [
                 path.resolve(__dirname,'../'),
             ],
-            use: ['cache-loader','thread-loader', 
+            use: ['cache-loader','thread-loader',
             {
                 loader: 'vue-loader',
                 options: {

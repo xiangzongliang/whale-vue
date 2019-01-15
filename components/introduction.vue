@@ -1,17 +1,20 @@
 <template>
-    <div>
-        <section class="logo">
-            <img src="@/assets/images/logo.png" alt="">
-            <p>whale-vue</p>
-        </section>
-        <section>
-            <h3></h3>
-        </section>
-    </div>
+  <div>
+    <section class="logo">
+      <img
+        src="@/assets/images/logo.png"
+        alt=""
+      >
+      <p>whale-vue</p>
+    </section>
+    <section>
+      <h3 />
+    </section>
+  </div>
 </template>
 <script>
 export default {
-    name:'简介',
+    name:'',
     data(){
         return{
 

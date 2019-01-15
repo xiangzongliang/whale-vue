@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <header-dom></header-dom>
-        support
-    </div>
+  <div>
+    <header-dom />
+    support
+  </div>
 </template>
 <script>
 import headerDom from '@/components/header'
