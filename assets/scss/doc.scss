@@ -1,0 +1,48 @@
+.doc-content{
+    width: 50vw;
+    margin-right: 20vw;
+    cursor: pointer;
+    word-wrap:break-word;
+    h2{
+        font-size: .5rem;
+        color: #333;
+        padding: .3rem 0rem;
+    }
+    p{
+        font-size: .33rem;
+    }
+    a{
+        color: #e95d25;
+        margin: 0rem .1rem;
+        font-weight: 600;
+        text-decoration: underline
+    }
+    code,.war,.err,.success{
+        border-radius: 4px;
+        margin: .1rem 0rem;
+    }
+    code{
+        padding:2px 8px;
+        line-height: .45rem;
+        border:1px solid #c4c4c4;
+        background: #ececec;
+        display: inline-block;
+        cursor: text;
+    }
+    .war,.err,.success{
+        padding: .2rem;
+        font-size: .24rem;
+    }
+    .success{
+        background: #ffd9ca;
+        color: #e95d25;
+    }
+    .war{
+        background: #ffd9ca;
+        color: #e95d25;
+    }
+    .err{
+        background: #cbffca;
+        color: #20b51c;
+    }
+}

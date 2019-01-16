@@ -8,8 +8,8 @@ module.exports = {
         //"eslint:recommended", 
         // 官方配置文档 https://eslint.vuejs.org/rules/
         //"plugin:vue/base"     // Enabling Correct ESLint Parsing  按照基本的eslint解析
-        "plugin:vue/strongly-recommended"  //Strongly Recommended (Improving Readability) 官方推荐
-        //"plugin:vue/essential"  //Error Prevention 基本的错误防范
+        //"plugin:vue/strongly-recommended"  //Strongly Recommended (Improving Readability) 官方推荐
+        "plugin:vue/essential"  //Error Prevention 基本的错误防范
     ],
     plugins: [
         //"html"

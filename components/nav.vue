@@ -13,12 +13,7 @@
         <p>{{ item.name }}</p>
         <template v-if="item.child">
           <div class="child">
-            <p 
-              v-for="(c_item,c_index) in item.child"
-              :key="c_index"
-              :class="activeChild == c_item.key ? 'child-active' : ''"
-              @click.stop="checkChild(c_item)"
-            >
+            <p v-for="(c_item,c_index) in item.child" :key="c_index" :class="activeChild == c_item.key ? 'child-active' : ''" @click.stop="checkChild(c_item)" >
               {{ c_item.name }}
             </p>
           </div>
@@ -59,6 +54,10 @@ export default {
         checkNav(item){
             this.activeNav = item.key
             this.activeChild = item.child ? item.child[0].key : ''
+            //跳转路由
+            this.$router.push({
+                path:'/install'
+            })
         },
         checkChild(item){
             this.activeChild = item.key
