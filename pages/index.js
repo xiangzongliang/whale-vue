@@ -1,21 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import docRouter from '@/router/doc-router'
+import eq_router from '@/router/router'
 import rem from '@/config/rem'
 import '@/assets/scss/index.scss';
 
-import doc from './doc.vue'
+import doc from './index.vue'
 Vue.config.productionTip = false //设置为 false 以阻止 vue 在启动时生成生产提示。
 
 Vue.use(Router)
 
-let router = new Router(docRouter)
+let router = new Router(eq_router)
 new Vue({
     el: '#app',
     router,
     render: h => h(doc),
 })
-
 
 
 /**

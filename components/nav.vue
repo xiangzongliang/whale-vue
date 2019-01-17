@@ -26,11 +26,11 @@
 export default {
     data(){
         return {
-            activeNav:'start',
+            activeNav:'',
             activeChild:'',
             navList:[{
-                key:'start',
-                name:'起步'
+                key:'',
+                name:'简介'
             },{
                 key:'install',
                 name:'安装',
@@ -56,7 +56,7 @@ export default {
             this.activeChild = item.child ? item.child[0].key : ''
             //跳转路由
             this.$router.push({
-                path:'/install'
+                path:`/${item.key}`,
             })
         },
         checkChild(item){

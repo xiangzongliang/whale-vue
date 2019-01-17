@@ -3,17 +3,15 @@
         <router-view name="header"></router-view>
         <div class="content">
             <router-view name="nav"></router-view>
-            <router-view name="install"></router-view>
+            <router-view name="Content"></router-view>
+            
         </div>
     </div>
 </template>
 <script type="text/javascript">
 export default {
     mounted(){
-        //console.log('dsdsd')
-        if(true) {
-            //
-        }
+        //
     }
 }
 </script>

@@ -38,17 +38,13 @@ export default {
         return{
             navActive:'/',
             navList:[{
-                id:'1',
-                name:'简介',
-                link:'/'
-            },{
                 id:'2',
                 name:'文档',
-                link:'/doc.html'
+                link:'/'
             },{
                 id:'3',
                 name:'支持',
-                link:'/support.html'
+                link:'/support'
             }]
         }
     },
@@ -56,7 +52,9 @@ export default {
     },
     methods:{
         goPage(item){
-            window.location.href = item.link
+            this.$router.push({
+                path:item.link
+            })
         }
     }
 }
