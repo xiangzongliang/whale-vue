@@ -1,0 +1,58 @@
+@charset "utf-8";
+
+$line-height: .8rem;
+$bg-color:#e95d25;
+
+$tit-fsz:0.28rem;
+$content-fsz:.26rem;
+$content-fsz-color:#333;
+
+
+
+*,body,html{
+    padding: 0;
+    margin: 0;
+}
+body{
+    font-family: Source Sans Pro,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+    word-spacing: 1px;
+    font-size: 0.333rem;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+}
+input{
+    outline:none;
+    border: none;
+    &:focus{
+        outline:none;
+        border: none;
+    }
+    &:active{
+        outline:none;
+        border: none;
+    }
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:#c9c9c9;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:#c9c9c9;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:#c9c9c9;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:#c9c9c9;
+}
+.fade-enter-to, .fade-leave {
+    opacity: 1;
+    transition: all 0.5s ease-in;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+    transition: all 0.5s ease-in;
+}
+
+@import './header.scss';
+@import './nav.scss';
+@import './doc.scss';

@@ -1,0 +1,37 @@
+.nav{
+    width: 20vw;
+    margin-left: 10vw;
+    word-wrap:break-word;
+    text-align: left;
+    .version{
+        font-size: .28rem;
+        background: $bg-color;
+        display: inline-block;
+        padding: 1px .2rem;
+        color: #fff;
+        margin-bottom: .6rem;
+    }
+    ul{
+        cursor: pointer;
+        li{
+            list-style: none;
+            font-size: $tit-fsz;
+            line-height: .6rem;
+            .child{
+                margin-left: 20px;
+                p{
+                    color: $content-fsz-color;
+                    font-weight: 400;
+                    font-size: $content-fsz;
+                }
+                .child-active{
+                    color: $bg-color;
+                }
+            }
+        }
+        .active{
+            color: $bg-color;
+            font-weight: 800;
+        }
+    }
+}
