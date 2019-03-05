@@ -12,7 +12,7 @@ const presets = [
                 android:"4.0",
                 node:"8.0.0"
             },
-            modules:false,
+            modules:false, //开启 | 关闭 ES6模块的转换
             useBuiltIns: "usage",
         },
     ]

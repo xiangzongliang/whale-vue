@@ -12,18 +12,18 @@ module.exports = (env, args) => {
     let webpackDevConfig = WebpackMerge(BASE,{
         module:{
             rules:[{
-                    test: /\.(sa|sc|c)ss$/,
-                    use: [ MiniCssExtractPlugin.loader,'css-loader','postcss-loader', 'sass-loader' ],
-                },{
-                    test: /\.less$/,
-                    use: [ MiniCssExtractPlugin.loader ,'css-loader', 'postcss-loader', 'less-loader' ],
-                }]
+                test: /\.(sa|sc|c)ss$/,
+                use: [ MiniCssExtractPlugin.loader,'css-loader','postcss-loader', 'sass-loader' ],
+            },{
+                test: /\.less$/,
+                use: [ MiniCssExtractPlugin.loader ,'css-loader', 'postcss-loader', 'less-loader' ],
+            }]
         },
         plugins:[
             new CopyWebpackPlugin([{
-                  from: path.resolve(__dirname, '../public'),
-                  to: path.resolve(__dirname, '../build'),
-              }]),
+                from: path.resolve(__dirname, '../public'),
+                to: path.resolve(__dirname, '../build'),
+            }]),
             new MiniCssExtractPlugin({
                 filename: 'css/[name].min.css',
                 chunkFilename: 'css/[name].min.css',

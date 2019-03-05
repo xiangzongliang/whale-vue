@@ -1,14 +1,5 @@
 @charset "utf-8";
 
-$line-height: .8rem;
-$bg-color:#e95d25;
-
-$tit-fsz:0.28rem;
-$content-fsz:.26rem;
-$content-fsz-color:#333;
-
-
-
 *,body,html{
     padding: 0;
     margin: 0;
@@ -18,6 +9,7 @@ body{
     word-spacing: 1px;
     font-size: 0.333rem;
     color: #333;
+    cursor: pointer;
     -webkit-font-smoothing: antialiased;
 }
 input{
@@ -32,6 +24,44 @@ input{
         border: none;
     }
 }
+section{
+    // background: #42b883;
+    // margin-top: 10vh;
+    font-family: 'whale';
+    color: #666;
+    text-align: center;
+    font-size: 40px;
+    font-weight: 200;
+    padding: 10vh 0;
+    letter-spacing:2px
+
+}
+code{
+    padding: 1px 8px;
+    margin: 0px 2px;
+    border-radius: 2px;
+    background: #dcdcdc;
+}
+.about{
+    width: 50vw;
+    display: inline-block;
+    margin:0 25vw;
+    p.tool{
+        font-size: 18px;
+        color: #c4c4c4;
+        font-weight: 400;
+    }
+    p.content{
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing:1px;
+        padding: 0 0 5vh 0;
+        text-align: left;
+        justify-content: space-between;
+
+    }
+
+}
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
     color:#c9c9c9;
 }
@@ -44,6 +74,11 @@ input{
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
     color:#c9c9c9;
 }
+@font-face{
+    font-family: 'whale'; 
+    src: url('../font/calibri.ttf');
+    // src: url('../font/BauhausStd-Light.otf')
+}
 .fade-enter-to, .fade-leave {
     opacity: 1;
     transition: all 0.5s ease-in;
@@ -52,7 +87,11 @@ input{
     opacity: 0;
     transition: all 0.5s ease-in;
 }
-
-@import './header.scss';
-@import './nav.scss';
-@import './doc.scss';
+footer{
+    position:fixed;
+    bottom: 8vh;
+    right: 10vw;
+    text-align: right;
+    box-sizing: border-box;
+    color: #c4c4c4;
+}

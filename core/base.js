@@ -115,19 +115,19 @@ module.exports = {
                 path.resolve(__dirname,'../'),
             ],
             use: ['cache-loader','thread-loader',
-            {
-                loader: 'vue-loader',
-                options: {
-                    //hotReload: false, // false 关闭热重载 默认 true (服务端渲染的时候需要关闭热重载)
-                    loaders: {
-                        js: 'happypack/loader?id=babel',
-                        css:{
-                            use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'vue-style-loader', 'css-loader' ,'postcss-loader'],
-                            fallback: 'vue-style-loader'
-                        }
-                    },
-                }
-            }]
+                {
+                    loader: 'vue-loader',
+                    options: {
+                        //hotReload: false, // false 关闭热重载 默认 true (服务端渲染的时候需要关闭热重载)
+                        loaders: {
+                            js: 'happypack/loader?id=babel',
+                            css:{
+                                use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'vue-style-loader', 'css-loader' ,'postcss-loader'],
+                                fallback: 'vue-style-loader'
+                            }
+                        },
+                    }
+                }]
         },{
             test: /\.js$/,
             use: [ {loader: 'cache-loader'}, 'happypack/loader?id=babel' ],
@@ -148,7 +148,7 @@ module.exports = {
                             loader: "file-loader",
                             options: {
                                 name:'[name].[ext]',
-                                publicPath: '../img',
+                                publicPath: './img',
                                 outputPath: './img'
                             }
                         },

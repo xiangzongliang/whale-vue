@@ -12,15 +12,13 @@ const WebpackMerge = require('webpack-merge');
  * thread-loader 可以将非常消耗资源的 loaders 转存到 worker pool 中。
  */
 const threadLoader = require('thread-loader');
-threadLoader.warmup({
-        workers:2
-    },[
-        'babel-loader',
-        'style-loader',
-        'vue-loader',
-        'css-loader',
-        'url-loader',
-        'less-loader',
+threadLoader.warmup({ workers:2 },[
+    'babel-loader',
+    'style-loader',
+    'vue-loader',
+    'css-loader',
+    'url-loader',
+    'less-loader',
 ]);
 
 
@@ -28,33 +26,33 @@ module.exports = (env, args) => {
     let webpackDevConfig = WebpackMerge(BASE,{
         module:{
             rules:[{
-                    //enforce: 'pre',
-                    test: /\.(vue|js)$/,
-                    loader: 'eslint-loader',
-                    exclude: /node_modules/,
-                    // options:{
-                    //     fix:true,   // This option will enable ESLint autofix feature. 启用
-                    //     cache:true, 
-                    //     //This option will enable caching of the linting results into a file. This is particularly useful in reducing linting time when doing a full build.
-                    //     //开启缓存以提高检测速度，默认缓存路径为./node_modules/.cache
-                    //     //eslintPath: path.join(__dirname, "../"),
-                    // }
-                },{
-                    test: /\.(sa|sc|c)ss$/,
-                    use: [ 'style-loader' ,'css-loader', 'sass-loader' ],
-                },{
-                    test: /\.less$/,
-                    use: [ 'style-loader', 'css-loader', 'less-loader' ],
-                }]
+                //enforce: 'pre',
+                test: /\.(vue|js)$/,
+                loader: 'eslint-loader',
+                exclude: /node_modules/,
+                // options:{
+                //     fix:true,   // This option will enable ESLint autofix feature. 启用
+                //     cache:true, 
+                //     //This option will enable caching of the linting results into a file. This is particularly useful in reducing linting time when doing a full build.
+                //     //开启缓存以提高检测速度，默认缓存路径为./node_modules/.cache
+                //     //eslintPath: path.join(__dirname, "../"),
+                // }
+            },{
+                test: /\.(sa|sc|c)ss$/,
+                use: [ 'style-loader' ,'css-loader', 'sass-loader' ],
+            },{
+                test: /\.less$/,
+                use: [ 'style-loader', 'css-loader', 'less-loader' ],
+            }]
         },
 
         plugins:[
             new webpack.NamedModulesPlugin(),  //显示被热更新的模块名称
             new webpack.HotModuleReplacementPlugin(),   //HMR
-            // new BundleAnalyzerPlugin({
-            //     defaultSizes:'gzip',
-            //     logLevel:'warn'
-            // }),
+            new BundleAnalyzerPlugin({
+                defaultSizes:'gzip',
+                logLevel:'warn'
+            }),
             // new webpack.DllReferencePlugin({
             //     manifest: require('../vendor-manifest.json')
             // }),
@@ -156,7 +154,7 @@ module.exports = (env, args) => {
                 version: true,
                 // 添加警告
                 warnings: true,
-              },
+            },
         },
     });
     return webpackDevConfig
