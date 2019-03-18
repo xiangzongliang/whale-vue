@@ -12,5 +12,12 @@ module.exports = {
 	    template: './template/index.html',
         //chunks
         //excludeChunks
+    },
+    ts: {
+        title:'ts测试',
+	    entry: './pages/tsTest/tsTest.js',
+	    template: './template/index.html',
+        //chunks
+        //excludeChunks
     }
 }
