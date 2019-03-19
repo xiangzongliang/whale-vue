@@ -49,19 +49,19 @@ module.exports = (env, args) => {
         plugins:[
             new webpack.NamedModulesPlugin(),  //显示被热更新的模块名称
             new webpack.HotModuleReplacementPlugin(),   //HMR
-            new BundleAnalyzerPlugin({
-                defaultSizes:'gzip',
-                logLevel:'warn'
-            }),
+            // new BundleAnalyzerPlugin({
+            //     defaultSizes:'gzip',
+            //     logLevel:'warn'
+            // }),
             // new webpack.DllReferencePlugin({
             //     manifest: require('../vendor-manifest.json')
             // }),
 
-            new Jarvis({
-                port: 1337,
-                host:'0.0.0.0',
-                open:true
-            })
+            // new Jarvis({
+            //     port: 1337,
+            //     host:'0.0.0.0',
+            //     open:true
+            // })
         ],
         devServer:{
             host:'localhost',

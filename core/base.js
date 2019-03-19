@@ -27,7 +27,7 @@ module.exports = {
         alias: {
             '@':path.resolve(__dirname, '../'),
         },
-        extensions:['.js','.vue','.json'],
+        extensions:['.js','.vue','.json','.ts','.tsx'],
         symlinks: false,
     },
 
@@ -128,6 +128,25 @@ module.exports = {
                         },
                     }
                 }]
+        },{
+            test: /\.tsx?$/,
+            exclude: /node_modules/,
+            use: [{
+                loader: "ts-loader",
+                options: { 
+                    appendTsxSuffixTo: [/\.vue$/] 
+                }
+            }]
+        },{
+            test: /\.ts$/,
+            enforce: 'pre',
+            exclude: /node_modules/,
+            use: [
+                {
+                    loader: 'tslint-loader',
+                    //options: { /* Loader options go here */ }
+                }
+            ]
         },{
             test: /\.js$/,
             use: [ {loader: 'cache-loader'}, 'happypack/loader?id=babel' ],
