@@ -2,7 +2,8 @@ module.exports = {
     root: true,     //不用再去父级目录中找校验文件了
     env: {
         "browser": true,
-        "es6": true
+        "es6": true,
+        //"node":true
     },
     extends: [
         //"eslint:recommended", 
@@ -21,8 +22,22 @@ module.exports = {
         "parser": "babel-eslint",
     },
     rules:{	
-        "no-empty":2,
-        "no-console":2
+        "indent": [1,'tab'|4], //使用什么换行
+        'no-dupe-args': 2, //函数定义的时候不允许出现重复的参数
+        'no-dupe-keys': 2, //对象中不允许出现重复的键
+        'no-duplicate-case': 2, //switch语句中不允许出现重复的case标签
+        'no-empty': 2, //不允许出现空的代码块
+        'no-negated-in-lhs': 2, //不允许在in表达式语句中对最左边的运算数使用取反操作
+        'no-unreachable': 2, //在return，throw，continue，break语句后不允许出现不可能到达的语句
+        'use-isnan': 2, //要求检查NaN的时候使用isNaN()
+        'default-case': 0, //在switch语句中需要有default语句
+        'no-eval': 2, //不允许使用eval()
+        'no-loop-func': 2, //不允许在循环语句中进行函数声明
+        'no-redeclare': 2, //不允许变量重复声明
+        'no-self-compare': 2, //不允许自己和自己比较
+        'no-shadow-restricted-names': 2, //js关键字和保留字不能作为函数名或者变量名
+        'generator-star-spacing': [2, "both"], //生成器函数前后空格
+        'vue/no-use-v-if-with-v-for':1,
     }
     // "rules": {
     //     "accessor-pairs": "error",

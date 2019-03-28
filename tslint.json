@@ -1,0 +1,32 @@
+{
+    // "extends": "tslint-config-standard",
+    "extends": [
+        // "tslint:recommended"
+    ],
+    "globals": {
+        "require": true
+    },
+    "rules": {
+        //禁止使用“// @ ts-ignore”注释
+        "ban-ts-ignore": true,
+        //不允许使用“any”作为类型声明。
+        "no-any": true,
+        "max-line-length": {
+            "options": [120]
+        },
+        "new-parens": true,
+        "no-arg": true,
+        "no-bitwise": true,
+        "no-conditional-assignment": true,
+        "no-consecutive-blank-lines": false,
+        "no-console": {
+            "severity": "warning",
+            "options": ["debug", "info", "log", "time", "timeEnd", "trace"]
+        }
+    },
+    "jsRules": {
+        "max-line-length": {
+            "options": [120]
+        }
+    }
+}

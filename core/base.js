@@ -8,6 +8,7 @@ const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HappyPack = require('happypack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const happyThreadPool = HappyPack.ThreadPool({ size: UTILS.open_thread }); //happypack多个实例的时候，共享线程池，以达到资源的最小消耗
 
 module.exports = {
@@ -27,7 +28,7 @@ module.exports = {
         alias: {
             '@':path.resolve(__dirname, '../'),
         },
-        extensions:['.js','.vue','.json'],
+        extensions:['.js','.vue','.json','.ts','.tsx'],
         symlinks: false,
     },
 
@@ -115,19 +116,41 @@ module.exports = {
                 path.resolve(__dirname,'../'),
             ],
             use: ['cache-loader','thread-loader',
-            {
-                loader: 'vue-loader',
-                options: {
-                    //hotReload: false, // false 关闭热重载 默认 true (服务端渲染的时候需要关闭热重载)
-                    loaders: {
-                        js: 'happypack/loader?id=babel',
-                        css:{
-                            use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'vue-style-loader', 'css-loader' ,'postcss-loader'],
-                            fallback: 'vue-style-loader'
-                        }
-                    },
+                {
+                    loader: 'vue-loader',
+                    options: {
+                        //hotReload: false, // false 关闭热重载 默认 true (服务端渲染的时候需要关闭热重载)
+                        loaders: {
+                            js: 'happypack/loader?id=babel',
+                            css:{
+                                use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'vue-style-loader', 'css-loader' ,'postcss-loader'],
+                                fallback: 'vue-style-loader'
+                            }
+                        },
+                    }
+                }]
+        },{
+            test: /\.ts?$/,
+            exclude: /node_modules/,
+            use: [{
+                loader: "ts-loader",
+                options: { 
+                    appendTsxSuffixTo: [/\.vue$/] ,
+                    happyPackMode:true,
+                    //禁用类型检查器 - 我们将在fork插件中使用它：  
+                    // transpileOnly:true,
                 }
             }]
+        },{
+            test: /\.tsx$/,
+            enforce: 'pre',
+            exclude: /node_modules/,
+            use: [
+                {
+                    loader: 'tslint-loader',
+                    //options: { /* Loader options go here */ }
+                }
+            ]
         },{
             test: /\.js$/,
             use: [ {loader: 'cache-loader'}, 'happypack/loader?id=babel' ],
@@ -148,7 +171,7 @@ module.exports = {
                             loader: "file-loader",
                             options: {
                                 name:'[name].[ext]',
-                                publicPath: '../img',
+                                publicPath: './img',
                                 outputPath: './img'
                             }
                         },
@@ -184,6 +207,11 @@ module.exports = {
             verbose: true,         //允许 HappyPack 输出日志 ,默认true
             threadPool: happyThreadPool,
         }),
+        // new ForkTsCheckerWebpackPlugin({
+        //     tsconfig:path.resolve(path.join(__dirname,'../tsconfig.json')), //配置文件的路径
+        //     tslint:true,
+        //     tslintAutoFix:true,//自动修复Ts错误
+        // }),
         ...UTILS.htmlPlugins()
     ]
 }

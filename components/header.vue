@@ -1,62 +1,71 @@
 <template>
-  <div>
-    <div class="header">
-      <h1>
-        <img
-          src="@/assets/images/logo.png"
-          alt=""
-        >
-        whale-vue
-      </h1>
-            
-      <ul>
-        <li
-          v-for="(item,key) in navList"
-          :key="key"
-          @click="goPage(item)"
-        >
-          {{ item.name }}
-        </li>
-        <li class="search">
-          <input
-            type="text"
-            placeholder="搜索"
-          >
-          <img src="@/assets/icon/search.png">
-        </li>
-        <li class="github">
-          <img src="@/assets/icon/github.png">
-        </li>
-      </ul>
-    </div>
-    <div class="csbg" />
-  </div>
+    <header>
+        <h3>whale-vue</h3>
+        <p>version 1.0.0</p>
+        <img @click="goGithub" src="@/assets/icon/github.png" alt="">
+        <ul>
+            <li v-for="(item,index) in navList" :key='index' @click="goPage(item)">{{ item.name }}</li>
+        </ul>
+    </header>
 </template>
 <script>
 export default {
     data(){
         return{
-            navActive:'/',
             navList:[{
-                id:'2',
-                name:'文档',
-                link:'/'
+                name:'首页',
+                link:'./index.html'
             },{
-                id:'3',
-                name:'支持',
-                link:'/support'
+                name:'关于',
+                link:'./about.html'
             }]
         }
     },
-    mounted(){
-    },
     methods:{
         goPage(item){
-            this.$router.push({
-                path:item.link
-            })
+            window.location.href = item.link
+            console.log(item)
+        },
+        goGithub(){
+            window.open('https://github.com/xiangzongliang/whale-vue')
         }
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    header{
+        display: block;
+        width: 100%;
+        text-align: center;
+        h3{
+            font-family: 'whale';
+            padding-top: 16vh;
+            font-size: 80px;
+            color: #42b883;
+        }
+        p{
+            color: #c4c4c4;
+            font-size: 18px;
+        }
+        img{
+            width: 20px;
+            margin-top: 20px;
+        }
+        ul{
+            padding-top: 2vh;
+            li{
+                display: inline-block;
+                padding: 0 20px;
+                font-size: 18px;
+                color: #555;
+                text-decoration: underline;
+                &:hover{
+                    color: #42b883;
+                    transition: 0.2s ease-in;
+                }
+            }
+        }
+    }
+</style>
 

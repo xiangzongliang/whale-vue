@@ -1,0 +1,59 @@
+{ 
+	// 编译选项
+	"compilerOptions": {
+		// 与 Vue 的浏览器支持保持一致 编译输出目标 ES 版本
+		"target": "es5",
+		// 这可以对 `this` 上的数据属性进行更严格的推断
+		"strict": true,
+		// 如果使用 webpack 2+ 或 rollup，可以利用 tree-shake:
+		"module": "es2015", //esnext
+		//// 如何处理模块
+        "moduleResolution": "node",
+        "types": ["node"],
+        // 启用装饰器
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        // 允许编译javascript文件
+        "allowJs": true,
+	  
+
+
+
+		// 输出目录
+		//"outDir": "./output",
+		// 是否包含可以用于 debug 的 sourceMap
+		//"sourceMap": true,
+
+
+		// 允许从没有设置默认导出的模块中默认导入
+		// "allowSyntheticDefaultImports": true,
+		// 将每个文件作为单独的模块
+		// "isolatedModules": false,
+		// 启用设计类型元数据（用于反射）
+		// "emitDecoratorMetadata": true,
+		// 在表达式和声明上有隐含的any类型时报错
+		// "noImplicitAny": false,
+		// 不是函数的所有返回路径都有返回值时报错。
+		// "noImplicitReturns": true,
+		// 从 tslib 导入外部帮助库: 比如__extends，__rest等
+		// "importHelpers": true,
+		// 编译过程中打印文件名
+		// "listFiles": true,
+		// 移除注释
+		// "removeComments": true,
+		// "suppressImplicitAnyIndexErrors": true,
+		// 解析非相对模块名的基准目录
+        "baseUrl": "./",
+		
+		// 指定特殊模块的路径
+		"paths": {
+            "@": ["./"]
+		},
+		// 编译过程中需要引入的库文件的列表
+		"lib": [
+			"dom",
+			"es2015",
+			"es2015.promise"
+		]
+    }
+}

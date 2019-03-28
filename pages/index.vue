@@ -1,25 +1,25 @@
 <template>
     <div>
-        <router-view name="header"></router-view>
-        <div class="content">
-            <router-view name="nav"></router-view>
-            <router-view name="Content"></router-view>
-            
-        </div>
+        <header-dom></header-dom>
+        <section>
+            {{ des }}
+        </section>
+        <footer-dom></footer-dom>
     </div>
 </template>
-<script type="text/javascript">
+<script>
+import headerDom from '@/components/header.vue'
+import footerDom from '@/components/footer.vue'
 export default {
-    mounted(){
-        //
+    data(){
+        return{
+            des:'自定义的多页脚手架'
+        }
+    },
+    components:{
+        headerDom,
+        footerDom
     }
 }
 </script>
-<style lang="scss" scoped>
-.content{
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 10vh;
-}
-</style>
 
