@@ -11,6 +11,7 @@ module.exports = {
 	    entry: './pages/about/about.js',
 	    template: './template/index.html',
         //chunks
+        //favicon
         //excludeChunks
     }
 }
