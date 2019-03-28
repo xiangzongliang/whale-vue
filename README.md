@@ -1,5 +1,8 @@
 ## [Whale-Vue 示例文档](https://whale.xiangzongliang.com "示例文档")
 
+### 说明
+`whale-vue`是一个基于`webpack4`和`vue2.+`进行编写的多页面脚手架，其配置将完全暴露在`core`目录中，并未进行封装，用户可以根据自己的需求进行重新修改配置； 你可以像重新配置`webpack`一样的阅读脚手架代码，目录参考了`nuxt.js`和`egg`的部分结构，你可以直接克隆`Git`仓库的源码进行运行。
+
 
 ### 开始
 
