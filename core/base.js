@@ -8,6 +8,7 @@ const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HappyPack = require('happypack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const happyThreadPool = HappyPack.ThreadPool({ size: UTILS.open_thread }); //happypack多个实例的时候，共享线程池，以达到资源的最小消耗
 
 module.exports = {
@@ -129,16 +130,19 @@ module.exports = {
                     }
                 }]
         },{
-            test: /\.tsx?$/,
+            test: /\.ts?$/,
             exclude: /node_modules/,
             use: [{
                 loader: "ts-loader",
                 options: { 
-                    appendTsxSuffixTo: [/\.vue$/] 
+                    appendTsxSuffixTo: [/\.vue$/] ,
+                    happyPackMode:true,
+                    //禁用类型检查器 - 我们将在fork插件中使用它：  
+                    // transpileOnly:true,
                 }
             }]
         },{
-            test: /\.ts$/,
+            test: /\.tsx$/,
             enforce: 'pre',
             exclude: /node_modules/,
             use: [
@@ -203,6 +207,11 @@ module.exports = {
             verbose: true,         //允许 HappyPack 输出日志 ,默认true
             threadPool: happyThreadPool,
         }),
+        // new ForkTsCheckerWebpackPlugin({
+        //     tsconfig:path.resolve(path.join(__dirname,'../tsconfig.json')), //配置文件的路径
+        //     tslint:true,
+        //     tslintAutoFix:true,//自动修复Ts错误
+        // }),
         ...UTILS.htmlPlugins()
     ]
 }

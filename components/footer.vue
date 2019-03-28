@@ -1,5 +1,5 @@
 <template>
     <footer>
-        陕ICP备14012295号-1
+        粤ICP备19023521号
     </footer>
 </template>
