@@ -1,4 +1,4 @@
-var CACHE_NAME = 'v1.1.4';
+var CACHE_NAME = 'v1.1.5';
 var cacheFileList = [
     '/index.html',
     '/about.html',
@@ -10,6 +10,9 @@ var cacheFileList = [
     '/js/index.js',
     '/js/about.js',
     '/img/github.png',
+    '/css/vendors_css.min.css',
+    '/css/index.min.css',
+    '/css/about.min.css',
     '/fonts/calibri.ttf'
 ]
 self.addEventListener('install', function(event) {
