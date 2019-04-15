@@ -25,8 +25,8 @@ module.exports = (env, args) => {
                 to: path.resolve(__dirname, '../build'),
             }]),
             new MiniCssExtractPlugin({
-                filename: 'css/[name].min.css',
-                chunkFilename: 'css/[name].min.css',
+                filename: './[name].min.css',
+                chunkFilename: './[name].min.css',
             }),
             // new BundleAnalyzerPlugin({
             //     defaultSizes:'gzip',
