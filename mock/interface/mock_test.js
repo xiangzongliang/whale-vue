@@ -23,4 +23,12 @@ module.exports = (Mock) => {
             }
         })
     })
+    Mock.mock('/api/k','get', (req, res) => {
+        return Mock.mock({
+            "data":{
+                price:3215,
+                'k': '@float(2893.5, 3536.5,0,2)'
+            }
+        })
+    })
 }

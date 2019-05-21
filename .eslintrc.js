@@ -6,7 +6,7 @@ module.exports = {
         //"node":true
     },
     extends: [
-        //"eslint:recommended", 
+        // "eslint:recommended"
         // 官方配置文档 https://eslint.vuejs.org/rules/
         //"plugin:vue/base"     // Enabling Correct ESLint Parsing  按照基本的eslint解析
         //"plugin:vue/strongly-recommended"  //Strongly Recommended (Improving Readability) 官方推荐
