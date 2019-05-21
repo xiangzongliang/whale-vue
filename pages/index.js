@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import index from './index.vue'
 import '@/assets/scss/index.scss'
-import '@/public/ServiceWorker.js'
+// import '@/public/ServiceWorker.js'
 Vue.config.productionTip = false //设置为 false 以阻止 vue 在启动时生成生产提示。
 
+import mockTest from '../mock/index'
 
 new Vue({
     el: '#app',
