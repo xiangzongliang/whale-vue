@@ -1,4 +1,4 @@
-var CACHE_NAME = 'v1.1.6';
+var CACHE_NAME = 'v1.1.7';
 var cacheFileList = [
     '/index.html',
     '/about.html',

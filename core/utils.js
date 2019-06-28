@@ -35,8 +35,11 @@ const w_htmlPlugin = () =>{
     let htmlPlugin = []
     for(k in PAGES){
         let default_chunks = ['common','vue-vendor','charts','vendor',`${k}`,`whale_${k}`,'vendors_css'],
-            chunks = [],
-            excludeChunks = [];
+            chunks = [],    // 手动注入 Chunks
+            excludeChunks = [], //需要排除的 Chunks
+            htmlOutputPath = PAGES[k].htmlOutputPath ? PAGES[k].htmlOutputPath : ''; //将 html 文件输出到指定的路径
+
+
 
         /**
          * 自定义 chunks
@@ -87,7 +90,7 @@ const w_htmlPlugin = () =>{
         htmlPlugin.push(new HtmlWebpackPlugin({
             title: PAGES[k].title || 'title',
             chunks: chunks,
-            filename:`${k}.html`,
+            filename:`${htmlOutputPath}${k}.html`,
             minify: {
                 removeComments: true,       //Strip HTML comments
                 collapseWhitespace: true,   //折叠有助于文档树中文本节点的空白区域
