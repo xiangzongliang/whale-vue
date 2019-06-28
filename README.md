@@ -69,6 +69,7 @@ about: {
     //chunks
     //favicon
     //excludeChunks
+    //htmlOutputPath
 }
 ```
 - `title`将会通过`htmlWebpackPlugin.options.title`注入到模版页面中
@@ -78,6 +79,7 @@ about: {
 > 默认注入的模块已经经过优化,应该尽量减少`chunks API`的使用。
 - `favicon` 对应`htmlWebpackPlugin`插件的`favicon`
 - `excludeChunks`用于排除不必要的代码块，支持`[ Array | Function | RegExp]`,为数组时将会直接排除数组中的模块，为函数时接受当前默认代码块，并返回数组，为正则表达式，将会直接使用`test`方法排除。
+- `htmlOutputPath` 将 ***.html 文件输出到指定的路径,支持 `string` 需要相对路径,必须以 / 结尾,例: `../newPage/`会输出到和默认的`build`同级的`newPage`下,对于注入模块代码依然不变,文件名规则不变.
 > 该模块的改动尽量阅读源码。
 
 ##### `rem.js`
