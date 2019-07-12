@@ -10,10 +10,10 @@ const presets = [
                 ie:"10",
                 ios:"7.0",
                 android:"4.0",
-                node:"8.0.0"
+                node:"current"
             },
-            modules:false, //开启 | 关闭 ES6模块的转换
-            useBuiltIns: "usage",
+            // modules:false, //开启 | 关闭 ES6模块的转换
+            // useBuiltIns: "usage",
         },
     ]
 ];
