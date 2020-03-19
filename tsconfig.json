@@ -9,12 +9,14 @@
 		"module": "es2015", //esnext
 		//// 如何处理模块
         "moduleResolution": "node",
-        "types": ["node"],
+        "types": ["node","jest"],
         // 启用装饰器
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         // 允许编译javascript文件
-        "allowJs": true,
+		"allowJs": true,
+		
+		"jsx": "preserve",
 	  
 
 
@@ -36,7 +38,7 @@
 		// 不是函数的所有返回路径都有返回值时报错。
 		// "noImplicitReturns": true,
 		// 从 tslib 导入外部帮助库: 比如__extends，__rest等
-		// "importHelpers": true,
+		"importHelpers": true,
 		// 编译过程中打印文件名
 		// "listFiles": true,
 		// 移除注释
@@ -51,9 +53,23 @@
 		},
 		// 编译过程中需要引入的库文件的列表
 		"lib": [
+			"esnext",
 			"dom",
-			"es2015",
-			"es2015.promise"
-		]
-    }
-}
+			"dom.iterable",
+			"scripthost"
+		],
+		
+	},
+	"include": [
+		"./**/*.ts",
+		"./**/*.tsx",
+		"./**/*.vue",
+		"./**/*.ts",
+		"./**/*.tsx", "pages/line/line.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"./core",
+		"./config"
+	]
+} 

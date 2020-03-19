@@ -1,12 +1,22 @@
 <template>
-    <header>
-        <h3>whale-vue</h3>
-        <p>version 1.0.0</p>
-        <img @click="goGithub" src="@/assets/icon/github.png" alt="">
-        <ul>
-            <li v-for="(item,index) in navList" :key='index' @click="goPage(item)">{{ item.name }}</li>
-        </ul>
-    </header>
+  <header>
+    <h3>whale-vue</h3>
+    <p>version 2.0.0</p>
+    <img
+      @click="goGithub"
+      src="@/assets/icon/github.png"
+      alt=""
+    >
+    <ul>
+      <li
+        v-for="(item,index) in navList"
+        :key="index"
+        @click="goPage(item)"
+      >
+        {{ item.name }}
+      </li>
+    </ul>
+  </header>
 </template>
 <script>
 export default {

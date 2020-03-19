@@ -28,7 +28,7 @@ module.exports = {
         alias: {
             '@':path.resolve(__dirname, '../'),
         },
-        extensions:['.js','.vue','.json','.ts','.tsx'],
+        extensions:['.tsx','.ts','.vue','.js','.json'],
         symlinks: false,
     },
 
@@ -39,7 +39,7 @@ module.exports = {
         mainFields: [ 'jsnext:main', 'browser', 'main' ]        //查找模块的 package.json 文件之后 入口加载的优先顺序
     },
 
-    devtool:false,  //直接关闭，使用VUE插件在浏览器端调试
+    devtool:'inline-source-map' ||false,  //直接关闭，使用VUE插件在浏览器端调试
     cache:{},//缓存生成的 webpack 模块和 chunk，来改善构建速度
 
     //性能
@@ -76,9 +76,9 @@ module.exports = {
                     //maxInitialRequests:               //最大的初始化加载次数，默认为1；
                     //reuseExistingChunk: true          //表示可以使用已经存在的块，即如果满足条件的块已经存在就使用已有的，不再创建一个新的块。
                 },
-                charts: {
-                    test: /[\/]node_modules[\/]echarts/,
-                    name: "charts",
+                zrender: {
+                    test: /[\/]node_modules[\/]zrender/,
+                    name: "zrender",
                     chunks: 'initial',
                     priority: 90,
                 },
@@ -116,48 +116,36 @@ module.exports = {
                 path.resolve(__dirname,'../'),
             ],
             use: ['cache-loader','thread-loader',
-                {
-                    loader: 'vue-loader',
-                    options: {
-                        //hotReload: false, // false 关闭热重载 默认 true (服务端渲染的时候需要关闭热重载)
-                        loaders: {
-                            js: 'happypack/loader?id=babel',
-                            css:{
-                                use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'vue-style-loader', 'css-loader' ,'postcss-loader'],
-                                fallback: 'vue-style-loader'
-                            }
-                        },
-                    }
-                }]
-        },{
-            test: /\.ts?$/,
-            exclude: /node_modules/,
-            use: [{
-                loader: "ts-loader",
-                options: { 
-                    appendTsxSuffixTo: [/\.vue$/] ,
-                    happyPackMode:true,
-                    //禁用类型检查器 - 我们将在fork插件中使用它：  
-                    // transpileOnly:true,
+            {
+                loader: 'vue-loader',
+                options: {
+                    //hotReload: false, // false 关闭热重载 默认 true (服务端渲染的时候需要关闭热重载)
+                    loaders: {
+                        js: 'happypack/loader?id=babel',
+                        css:{
+                            use: [ isProd ? 'style-loader' : MiniCssExtractPlugin.loader,'vue-style-loader', 'css-loader' ,'postcss-loader'],
+                            fallback: 'vue-style-loader'
+                        }
+                    },
                 }
             }]
         },{
-            test: /\.tsx$/,
-            enforce: 'pre',
-            exclude: /node_modules/,
-            use: [
-                {
-                    loader: 'tslint-loader',
-                    //options: { /* Loader options go here */ }
+            test: /\.tsx?$/,
+            use:['cache-loader', 'happypack/loader?id=babel', {
+                loader:'ts-loader',
+                options: {
+                    appendTsSuffixTo: [/\.vue$/]
                 }
-            ]
+            }],
+            exclude: /node_modules/,
+            
         },{
             test: /\.js$/,
-            use: [ {loader: 'cache-loader'}, 'happypack/loader?id=babel' ],
-            exclude: /node_modules/,
+            use: ['cache-loader', 'happypack/loader?id=babel' ],
             include: [
                 path.resolve(__dirname,'../'),
             ],
+            exclude: /node_modules/,
         },{
             test: /\.(png|svg|jpg|jpeg|gif)$/,
             exclude: /node_modules/,

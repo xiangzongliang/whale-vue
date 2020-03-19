@@ -7,7 +7,7 @@ const PAGES = require('../config/pages');
 
 //页面的计算
 const w_pages = (env) => {
-    let callback_pages = {}
+    const callback_pages = {}
     for(k in PAGES){
         callback_pages[k] = PAGES[k].entry
     }
@@ -32,9 +32,9 @@ const isTypeof = agu =>{
 
 //html-webpack-plugin
 const w_htmlPlugin = () =>{
-    let htmlPlugin = []
+    const htmlPlugin = []
     for(k in PAGES){
-        let default_chunks = ['common','vue-vendor','charts','vendor',`${k}`,`whale_${k}`,'vendors_css'],
+        let default_chunks = ['common','vue-vendor','vendor','zrender',`${k}`,`whale_${k}`,'vendors_css'],
             chunks = [],    // 手动注入 Chunks
             excludeChunks = [], //需要排除的 Chunks
             htmlOutputPath = PAGES[k].htmlOutputPath ? PAGES[k].htmlOutputPath : ''; //将 html 文件输出到指定的路径
@@ -46,7 +46,7 @@ const w_htmlPlugin = () =>{
          * type : array | function
          */
         if(PAGES[k].chunks){
-            let chunksType = isTypeof(PAGES[k].chunks);
+            const chunksType = isTypeof(PAGES[k].chunks);
 
             if(chunksType === 'arr'){
                 chunks = PAGES[k].chunks
@@ -68,7 +68,7 @@ const w_htmlPlugin = () =>{
          * type : array | function | RegExp 
          */
         if(PAGES[k].excludeChunks){
-            let ecType = isTypeof(PAGES[k].excludeChunks);
+            const ecType = isTypeof(PAGES[k].excludeChunks);
             if(ecType === 'arr'){
                 excludeChunks = PAGES[k].excludeChunks
             }else if(ecType === 'fun'){
