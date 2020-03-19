@@ -9,7 +9,7 @@ const WebpackMerge = require('webpack-merge');
 
 
 module.exports = (env, args) => {
-    let webpackDevConfig = WebpackMerge(BASE,{
+    const webpackDevConfig = WebpackMerge(BASE,{
         module:{
             rules:[{
                 test: /\.(sa|sc|c)ss$/,

@@ -1,11 +1,11 @@
 <template>
-    <div>
-        <header-dom></header-dom>
-        <section>
-            {{ des }}
-        </section>
-        <footer-dom></footer-dom>
-    </div>
+  <div>
+    <header-dom />
+    <section>
+      {{ des }}
+    </section>
+    <footer-dom />
+  </div>
 </template>
 <script>
 import axios from 'axios'

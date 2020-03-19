@@ -1,16 +1,14 @@
 {
-    // "extends": "tslint-config-standard",
+    "extends": "tslint-config-standard",
     "extends": [
-        // "tslint:recommended"
+        "tslint:recommended"
     ],
     "globals": {
         "require": true
     },
     "rules": {
-        //禁止使用“// @ ts-ignore”注释
         "ban-ts-ignore": true,
-        //不允许使用“any”作为类型声明。
-        "no-any": true,
+        "no-any": false,
         "max-line-length": {
             "options": [120]
         },
