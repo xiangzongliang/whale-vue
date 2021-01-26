@@ -1,5 +1,3 @@
-# chart2.0
-
 #### Description
 whale-vue 脚手架2.0版本
 

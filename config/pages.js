@@ -1,7 +1,7 @@
 module.exports = {
     index: {
         title:'whale-vue 基于 webpack4 的 vue 大型多页项目脚手架',
-	    entry: './pages/index.js',
+	    entry: './pages/index/index.js',
 	    template: './template/index.html',
         //chunks  //function(...list) | array    手动注入 chunks 支持
         //favicon

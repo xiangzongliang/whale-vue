@@ -27,6 +27,13 @@ module.exports = {
         modules: [path.resolve(__dirname,'../node_modules')],  //指明包模块的加载路径，避免层层查找的消耗（也就是说webpack去那个目录下面查找三方的包模块）
         alias: {
             '@':path.resolve(__dirname, '../'),
+            '@/plugin':path.resolve(__dirname, '../plugin'),
+            '@/mock':path.resolve(__dirname, '../mock'),
+            '@/type':path.resolve(__dirname, '../type'),
+            '@/assets':path.resolve(__dirname, '../assets'),
+            '@/config':path.resolve(__dirname, '../config'),
+            '@/router':path.resolve(__dirname, '../router'),
+            '@/components':path.resolve(__dirname, '../components'),
         },
         extensions:['.tsx','.ts','.vue','.js','.json'],
         symlinks: false,

@@ -7,17 +7,20 @@
     <footer-dom />
   </div>
 </template>
-<script>
-import axios from 'axios'
-import headerDom from '@/components/header.vue'
-import footerDom from '@/components/footer.vue'
-export default {
-    data(){
+<script lang="ts">
+import footerDom from "@/components/footer.vue";
+import headerDom from "@/components/header.vue";
+import axios from "axios";
+import Vue from "vue";
+
+import { Pagedata } from "@/type/index/";
+export default Vue.extend({
+  data(): Pagedata {
         return{
-            des:'自定义的多页脚手架'
-        }
+            des: "自定义的多页脚手架",
+        };
     },
-    mounted(){
+    mounted() {
         /**
          * Mock 数据测试
          */
@@ -28,10 +31,11 @@ export default {
         //     console.log(error);
         // });
     },
-    components:{
+    components: {
         headerDom,
-        footerDom
-    }
-}
+        footerDom,
+    },
+});
+
 </script>
 
